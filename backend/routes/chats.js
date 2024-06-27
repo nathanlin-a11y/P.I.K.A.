@@ -6,19 +6,21 @@ const auth = require('../middleware/auth');
 
 // POST / - Create a new chat
 router.post('/', auth, async (req, res) => {
-  const { messages = [], pika_agent, functions = [], executor, llm_config = {} } = req.body;
-  const user_id = req.user.userId;
-  console.log("Creating chat: ", req.body);
-
-  // Update the created_by and updated_by fields for each message
-  const updatedMessages = messages.map(message => ({
-    ...message,
-    created_by: user_id,
-    updated_by: user_id,
-  }));
-
   try {
+    const { name = "New chat", messages = [], pika_agent, functions = [], executor, llm_config = {} } = req.body;
+    const user_id = req.user.userId;
+
+    console.log("Creating chat: ", req.body);
+
+    // Update the created_by and updated_by fields for each message
+    const updatedMessages = messages.map(message => ({
+      ...message,
+      created_by: user_id,
+      updated_by: user_id,
+    }));
+
     const newChat = new PIKAChat({
+      name,
       messages: updatedMessages,
       pika_agent,
       functions,
@@ -27,10 +29,12 @@ router.post('/', auth, async (req, res) => {
       created_by: user_id,
       updated_by: user_id,
     });
+
     await newChat.save();
     res.status(201).json(newChat);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error creating chat:', error);
+    res.status(500).json({ message: 'Internal Server Error', error: error.message });
   }
 });
 
@@ -45,10 +49,18 @@ router.get('/user_auth', auth, async (req, res) => {
 });
 
 router.get('/', auth, async (req, res) => {
+  const user_role = req.user.role;
+  console.log('User role:', user_role)
+  console.log('User ID:', req.user.userId)
   try {
-    const chats = await PIKAChat.find();
-    res.status(200).json(chats);
-  } catch (error) {
+    if (user_role === 'admin') {
+      const chats = await PIKAChat.find();
+      res.status(200).json(chats);
+    } else {
+      res.status(403).json({ message: 'Unauthorized to view all chats' });
+    }
+  }
+  catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
@@ -72,6 +84,38 @@ router.get('/:id', auth, async (req, res) => {
     }
 
     res.status(200).json(chat);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.patch('/:id', auth, async (req, res) => {
+  const { id } = req.params;
+  const user_id = req.user.userId;
+  const user_role = req.user.role;
+  try {
+    const chat = await PIKAChat.findById(id);
+    if (!chat) {
+      return res.status(404).json({ message: 'Chat not found' });
+    }
+    if (chat.created_by !== user_id && user_role != 'admin') {
+      return res.status(403).json({ message: 'Unauthorized to update this chat' });
+    }
+    if (chat.messages.length > 0) {
+      const updatedMessages = chat.messages.map(message => ({
+        ...message,
+        created_by: message.created_by ? message.created_by : user_id,
+        updated_by: message.updated_by ? message.updated_by : user_id,
+      }));
+      chat.messages = updatedMessages;
+    };
+
+    const updatedChat = {
+      ...req.body,
+      updated_by: user_id,
+    };
+    await PIKAChat.findByIdAndUpdate(id, updatedChat, { new: true , runValidators: true });
+    res.status(200).json({ message: 'Chat updated successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -110,13 +154,13 @@ router.patch('/:chatId/add_message', auth, async (req, res) => {
   const { message } = req.body;
   const userId = req.user.userId;
   try {
-    console.log('Received request:', { chatId, message, userId });
+    // console.log('Received request:', { chatId, message, userId });
     const chat = await PIKAChat.findById(chatId);
     if (!chat) {
       console.log('Chat not found:', chatId);
       return res.status(404).json({ message: 'Chat not found' });
     }
-    console.log('Found chat:', chat);
+    // console.log('Found chat:', chat);
     const updatedMessage = {
       ...message,
       created_by: userId,
@@ -132,16 +176,43 @@ router.patch('/:chatId/add_message', auth, async (req, res) => {
   }
 });
 
-// DELETE /:chatId - Delete a chat
-router.delete('/:chatId', auth, async (req, res) => {
+router.patch('/:chatId/add_task_response', auth, async (req, res) => {
   const { chatId } = req.params;
-
+  const { taskResponseId } = req.body;
+  const userId = req.user.userId;
   try {
-    const chat = await PIKAChat.findByIdAndDelete(chatId);
+    const chat = await PIKAChat.findById(chatId);
     if (!chat) {
       return res.status(404).json({ message: 'Chat not found' });
     }
-    res.status(200).json({ message: 'Chat deleted successfully' });
+    chat.task_responses.push(taskResponseId);
+    chat.updated_by = userId;
+    await chat.save();
+    res.status(200).json({ message: 'Task response added successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+
+// DELETE /:chatId - Delete a chat
+router.delete('/:chatId', auth, async (req, res) => {
+  const { chatId } = req.params;
+  const userId = req.user.userId;
+  const userRole = req.user.role;
+
+  try {
+    const chat = await PIKAChat.findById(chatId);
+    if (!chat) {
+      return res.status(404).json({ message: 'Chat not found' });
+    }
+    if (chat.created_by !== userId && userRole !== 'admin') {
+      return res.status(403).json({ message: 'Unauthorized to delete this chat' });
+    } else {
+      await PIKAChat.findByIdAndDelete(chatId);
+      res.status(200).json({ message: 'Chat deleted successfully' });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
