@@ -6,9 +6,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     height: '100%',
   },
-  chatPIKASidebar: {
-    borderRight: `1px solid ${theme.palette.divider}`,
-  },
   chatPIKAMain: {
     flexGrow: 1,
     display: 'flex',
@@ -22,6 +19,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   chatPIKAInput: {
     borderTop: `1px solid ${theme.palette.divider}`,
     padding: theme.spacing(2),
+  },
+  right_circle: {
+    marginLeft: 'auto !important',
+  },
+  actionButtonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
   },
 }));
 
