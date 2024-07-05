@@ -16,6 +16,7 @@ interface EnhancedAgentProps extends Omit<AgentComponentProps, 'items' | 'item' 
   itemId?: string;
   fetchAll: boolean;
   onSave?: (savedItem: PIKAAgent) => void;
+  onAddAgent?: () => void;
 }
 
 const EnhancedAgent: React.FC<EnhancedAgentProps> = (props) => {

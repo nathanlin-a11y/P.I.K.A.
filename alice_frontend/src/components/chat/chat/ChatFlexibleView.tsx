@@ -52,7 +52,7 @@ const ChatFlexibleView: React.FC<ChatComponentProps> = ({
             <FormControl fullWidth className={classes.formControl}>
                 <InputLabel>Agent</InputLabel>
                 <Select
-                    value={item.pika_agent._id || ''}
+                    value={item.pika_agent?._id || ''}
                     onChange={(e) => {
                         const selectedAgent = agents.find(agent => agent._id === e.target.value);
                         updateChatField('pika_agent', selectedAgent || item.pika_agent);
