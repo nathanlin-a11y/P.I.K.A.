@@ -1,4 +1,4 @@
-from workflow_logic.util.task_utils import FunctionParameters, ParameterDefinition
+from workflow_logic.core.parameters import FunctionParameters, ParameterDefinition
 from workflow_logic.core.tasks.task import PIKATask
 from workflow_logic.core.tasks.agent_tasks import PromptAgentTask, CodeGenerationLLMTask, CodeExecutionLLMTask, CheckTask, AgentWithFunctions, BasicAgentTask
 from workflow_logic.core.tasks.workflow import Workflow
