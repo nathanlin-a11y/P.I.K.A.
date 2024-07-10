@@ -1,5 +1,6 @@
 import mongoose, { Schema, Model } from 'mongoose';
 import { IChangeHistoryDocument, IMessageDocument, IPIKAChatDocument } from '../interfaces/chat.interface';
+import { ensureObjectIdHelper } from '../utils/utils';
 
 // ChangeHistory schema
 const changeHistorySchema = new Schema<IChangeHistoryDocument>({
@@ -17,7 +18,7 @@ const changeHistorySchema = new Schema<IChangeHistoryDocument>({
   timestamp: { type: Date, default: Date.now },
 });
 
-changeHistorySchema.methods.apiRepresentation = function(this: IChangeHistoryDocument) {
+changeHistorySchema.methods.apiRepresentation = function (this: IChangeHistoryDocument) {
   return {
     id: this._id,
     previous_agent: this.previous_agent ? (this.previous_agent._id || this.previous_agent) : null,
@@ -49,7 +50,7 @@ const messageSchema = new Schema<IMessageDocument>({
   task_responses: [{ type: Schema.Types.ObjectId, ref: 'TaskResult' }],
 }, { timestamps: true });
 
-messageSchema.methods.apiRepresentation = function(this: IMessageDocument) {
+messageSchema.methods.apiRepresentation = function (this: IMessageDocument) {
   return {
     id: this._id,
     content: this.content || null,
@@ -75,12 +76,12 @@ const pikaChatSchema = new Schema<IPIKAChatDocument>({
   pika_agent: { type: Schema.Types.ObjectId, ref: 'Agent', required: true, description: "The PIKA agent object" },
   functions: [{ type: Schema.Types.ObjectId, ref: 'Task', default: [], description: "List of functions to be registered with the agent" }],
   executor: { type: Schema.Types.ObjectId, ref: 'Agent', required: true, description: "The executor agent object" },
-  model_id: { type: Schema.Types.ObjectId, ref: 'Model', description: "The configuration for the LLM agent", default: {} },
+  model_id: { type: Schema.Types.ObjectId, ref: 'Model', description: "The configuration for the LLM agent"},
   created_by: { type: Schema.Types.ObjectId, ref: 'User' },
   updated_by: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
-pikaChatSchema.methods.apiRepresentation = function(this: IPIKAChatDocument) {
+pikaChatSchema.methods.apiRepresentation = function (this: IPIKAChatDocument) {
   return {
     id: this._id,
     messages: this.messages.map(message => message.apiRepresentation()),
@@ -95,49 +96,42 @@ pikaChatSchema.methods.apiRepresentation = function(this: IPIKAChatDocument) {
     updated_at: this.updatedAt || null
   };
 };
-
-// Middleware functions
 function ensureObjectIdForSave(this: IPIKAChatDocument, next: mongoose.CallbackWithoutResultAndOptionalError) {
-  if (this.pika_agent && (this.pika_agent as any)._id) {
-    this.pika_agent = (this.pika_agent as any)._id;
+  console.log('Before conversion:', this.model_id);
+  if (this.pika_agent) this.pika_agent = ensureObjectIdHelper(this.pika_agent);
+  if (this.executor) this.executor = ensureObjectIdHelper(this.executor);
+  if (this.created_by) this.created_by = ensureObjectIdHelper(this.created_by);
+  if (this.updated_by) this.updated_by = ensureObjectIdHelper(this.updated_by);
+  if (this.model_id) this.model_id = ensureObjectIdHelper(this.model_id);
+
+  if (this.functions) {
+    this.functions = this.functions.map(func => ensureObjectIdHelper(func));
   }
-  if (this.executor && (this.executor as any)._id) {
-    this.executor = (this.executor as any)._id;
-  }
-  if (this.created_by && (this.created_by as any)._id) {
-    this.created_by = (this.created_by as any)._id;
-  }
-  if (this.updated_by && (this.updated_by as any)._id) {
-    this.updated_by = (this.updated_by as any)._id;
-  }
-  if (this.model_id && (this.model_id as any)._id) {
-    this.model_id = (this.model_id as any)._id;
-  }
+
   next();
 }
 
 function ensureObjectIdForUpdate(this: mongoose.Query<any, any>, next: mongoose.CallbackWithoutResultAndOptionalError) {
   const update = this.getUpdate() as any;
-  if (update.pika_agent && update.pika_agent._id) {
-    update.pika_agent = update.pika_agent._id;
+  update.pika_agent = ensureObjectIdHelper(update.pika_agent);
+  update.executor = ensureObjectIdHelper(update.executor);
+  update.created_by = ensureObjectIdHelper(update.created_by);
+  update.updated_by = ensureObjectIdHelper(update.updated_by);
+  update.model_id = ensureObjectIdHelper(update.model_id);
+
+  if (update.functions) {
+    update.functions = update.functions.map((func: any) => ensureObjectIdHelper(func));
   }
-  if (update.executor && update.executor._id) {
-    update.executor = update.executor._id;
-  }
-  if (update.created_by && update.created_by._id) {
-    update.created_by = update.created_by._id;
-  }
-  if (update.updated_by && update.updated_by._id) {
-    update.updated_by = update.updated_by._id;
-  }
-  if (update.model_id && update.model_id._id) {
-    update.model_id = update.model_id._id;
-  }
+
   next();
 }
 
 function autoPopulate(this: mongoose.Query<any, any>) {
-  this.populate('pika_agent executor created_by updated_by functions model');
+  this.populate('pika_agent executor created_by updated_by model_id')
+    .populate({
+      path: 'functions',
+      model: 'Task'
+    });
 }
 
 pikaChatSchema.pre('save', ensureObjectIdForSave);
