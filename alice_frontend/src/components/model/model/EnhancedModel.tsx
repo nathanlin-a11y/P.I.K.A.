@@ -18,7 +18,7 @@ interface EnhancedModelProps extends Omit<ModelComponentProps, 'items' | 'item' 
   onSave?: (savedItem: PIKAModel) => void;
 }
 
-const EnhancedModel: React.FC<EnhancedModelProps> = (props) => {
+const EnhancedModel: React.FC<EnhancedModelProps> = (props: EnhancedModelProps) => {
   const renderContent = (
     items: PIKAModel[] | null,
     item: PIKAModel | null,

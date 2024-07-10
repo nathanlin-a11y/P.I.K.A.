@@ -1,7 +1,8 @@
-import { LLMConfig, User } from './Types';
+import { User } from './Types';
 import { PIKATask, convertToPIKATask } from './TaskTypes';
 import { PIKAAgent, convertToPIKAAgent } from './AgentTypes';
 import { TaskResponse } from './TaskResponseTypes';
+import { PIKAModel } from './ModelTypes';
 export interface PIKAChat {
     _id: string;
     name: string;
@@ -9,7 +10,7 @@ export interface PIKAChat {
     pika_agent: PIKAAgent;
     functions?: PIKATask[];
     executor: PIKAAgent;
-    llm_config?: LLMConfig;
+    model_id?: PIKAModel;
     task_responses?: TaskResponse[];
     created_by?: User;
     updated_by?: User;
@@ -59,7 +60,7 @@ export const convertToPIKAChat = (data: any): PIKAChat => {
         pika_agent: convertToPIKAAgent(data?.pika_agent),
         functions: (data?.functions || []).map(convertToPIKATask),
         executor: convertToPIKAAgent(data?.executor),
-        llm_config: data?.llm_config || undefined,
+        model_id: data?.model_id || undefined,
         task_responses: (data?.task_responses || []).map((response: any) => ({
             ...response,
             createdAt: response.createdAt ? new Date(response.createdAt) : undefined,
@@ -80,8 +81,8 @@ export interface CreatePIKAChat {
     name: string;
     pika_agent: string | PIKAAgent;
     executor: string | PIKAAgent;
-    llm_config?: LLMConfig;
-    functions?: string[];
+    model_id?: string | PIKAModel;
+    functions?: string[] | PIKATask[];
 }
 
 export interface ChatComponentProps {
