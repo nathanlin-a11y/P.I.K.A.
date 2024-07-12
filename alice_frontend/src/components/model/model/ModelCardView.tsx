@@ -13,7 +13,7 @@ import { ModelComponentProps } from '../../../utils/ModelTypes';
 import { PIKAModel } from '../../../utils/ModelTypes';
 const ModelCardView: React.FC<ModelComponentProps> = ({
     item,
-}: { item: PIKAModel }) => {
+}: { item: PIKAModel | null }) => {
     if (!item) {
         return <Typography>No chat data available.</Typography>;
     }
