@@ -49,6 +49,7 @@ export interface ModelComponentProps {
   mode: 'create' | 'view' | 'edit';
   handleSave: () => Promise<void>;
   isInteractable?: boolean;
+  onView?: (model: PIKAModel) => void;
   onInteraction?: (model: PIKAModel) => void;
   showHeaders?: boolean;
 }

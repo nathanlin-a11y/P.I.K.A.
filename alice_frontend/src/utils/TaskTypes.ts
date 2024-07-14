@@ -122,7 +122,7 @@ export interface TaskComponentProps {
   onChange: (newItem: Partial<PIKATask>) => void;
   handleSave: () => Promise<void>;
   onInteraction?: (task: PIKATask) => void;
-  onAddTask?: (task: PIKATask) => void;
+  onView?: (task: PIKATask) => void;
   isInteractable?: boolean;
   showHeaders?: boolean;
 }

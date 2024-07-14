@@ -52,6 +52,6 @@ export interface AgentComponentProps {
   handleSave: () => Promise<void>;
   isInteractable?: boolean;
   onInteraction?: (agent: PIKAAgent) => void;
-  onAddAgent?: (agent: PIKAAgent) => void;
+  onView?: (agent: PIKAAgent) => void;
   showHeaders?: boolean;
 }

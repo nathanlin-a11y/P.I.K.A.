@@ -93,7 +93,7 @@ export interface ChatComponentProps {
     handleSave: () => Promise<void>;
     isInteractable?: boolean;
     onInteraction?: (chat: PIKAChat) => void;
-    onAddChat?: (chat: PIKAChat) => void;
+    onView?: (chat: PIKAChat) => void;
     showRegenerate?: boolean;
     handleTaskClick?: (taskId: string) => void;
     handleTaskResultClick?: (taskResultId: string) => void;
