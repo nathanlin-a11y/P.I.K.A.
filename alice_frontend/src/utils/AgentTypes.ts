@@ -1,6 +1,7 @@
-import { User } from "./Types";
+import { User } from "./UserTypes";
 import { PIKAModel } from "./ModelTypes";
 import { Prompt } from "./PromptTypes";
+
 export interface PIKAAgent {
   _id?: string;
   name: string;
@@ -21,6 +22,7 @@ export interface PIKAAgent {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
 export const convertToPIKAAgent = (data: any): PIKAAgent => {
   return {
     _id: data?._id || undefined,
