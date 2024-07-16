@@ -2,6 +2,7 @@ from typing import Dict, Any, Optional, List, Callable, Union
 from pydantic import Field
 from workflow_logic.core.communication import TaskResponse
 from workflow_logic.core.tasks.task import PIKATask
+from workflow_logic.core.communication import WorkflowOutput
 
 class Workflow(PIKATask):
     """
@@ -44,6 +45,7 @@ class Workflow(PIKATask):
                 input("Press Enter to continue to the next step...")
 
         return TaskResponse(
+            task_id=self.id if self.id else '',
             task_name=self.task_name,
             task_description=self.task_description,
             status=status,
