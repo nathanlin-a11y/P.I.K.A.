@@ -1,5 +1,5 @@
-import mongoose, { Schema, Model } from 'mongoose';
-import { IChangeHistoryDocument, IMessageDocument, IPIKAChatDocument } from '../interfaces/chat.interface';
+import mongoose, { Schema } from 'mongoose';
+import { IChangeHistoryDocument, IMessageDocument, IPIKAChatDocument, IPIKAChatModel } from '../interfaces/chat.interface';
 import { ensureObjectIdHelper } from '../utils/utils';
 
 // ChangeHistory schema
@@ -69,7 +69,7 @@ messageSchema.methods.apiRepresentation = function (this: IMessageDocument) {
 };
 
 // PIKAChat schema
-const pikaChatSchema = new Schema<IPIKAChatDocument>({
+const pikaChatSchema = new Schema<IPIKAChatDocument, IPIKAChatModel>({
   name: { type: String, default: "New Chat", description: "Name of the chat" },
   messages: [{ type: messageSchema, required: true, default: [], description: "List of messages in the chat conversation" }],
   changeHistory: [{ type: changeHistorySchema, default: [], description: "List of changes in the chat conversation" }],
@@ -139,6 +139,6 @@ pikaChatSchema.pre('findOneAndUpdate', ensureObjectIdForUpdate);
 pikaChatSchema.pre('find', autoPopulate);
 pikaChatSchema.pre('findOne', autoPopulate);
 
-const PIKAChat = mongoose.model<IPIKAChatDocument, Model<IPIKAChatDocument>>('PIKAChat', pikaChatSchema);
+const PIKAChat = mongoose.model<IPIKAChatDocument, IPIKAChatModel>('PIKAChat', pikaChatSchema);
 
 export default PIKAChat;

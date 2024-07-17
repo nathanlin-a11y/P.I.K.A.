@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose';
+import { Model, Types, Document } from 'mongoose';
 
 // ChangeHistory interfaces
 export interface IChangeHistory {
@@ -54,8 +54,15 @@ export interface IPIKAChat {
     updated_by: Types.ObjectId;
 }
 
-export interface IPIKAChatDocument extends IPIKAChat, Document {
+export interface IPIKAChatMethods {
+    apiRepresentation(): any;
+}
+
+export interface IPIKAChatDocument extends IPIKAChat, Document, IPIKAChatMethods {
     createdAt: Date;
     updatedAt: Date;
-    apiRepresentation: () => any;
+}
+
+export interface IPIKAChatModel extends Model<IPIKAChatDocument> {
+    // Add any static methods here if needed
 }

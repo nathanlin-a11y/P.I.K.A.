@@ -114,9 +114,6 @@ export type AnyTaskForm = PromptAgentTaskForm | AgentWithFunctionsForm | CheckTa
 export type TaskFormProps<T extends AnyTaskForm> = {
   form: T;
   setForm: (newForm: T) => void;
-  agents: PIKAAgent[];
-  prompts: Prompt[];
-  availableTasks: PIKATask[];
   viewOnly: boolean;
 };
 
