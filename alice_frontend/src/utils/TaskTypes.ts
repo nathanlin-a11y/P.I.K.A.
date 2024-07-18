@@ -125,6 +125,7 @@ export interface TaskComponentProps {
   handleSave: () => Promise<void>;
   onInteraction?: (task: PIKATask) => void;
   onView?: (task: PIKATask) => void;
+  onExecute?: () => Promise<any>;
   isInteractable?: boolean;
   showHeaders?: boolean;
 }
