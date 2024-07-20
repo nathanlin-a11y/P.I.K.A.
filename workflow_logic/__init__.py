@@ -1,7 +1,8 @@
 from .core import PIKATask, Workflow, PIKAAgent, PIKAModel, BasicAgentTask, MessageDict, PromptAgentTask, APITask, TemplatedTask, Prompt, DatabaseTaskResponse, PIKAChat, ChatExecutionFunctionality, TaskResponse, MessageDict
-from .api import  api_app, BackendAPI, available_task_types, ContainerAPI
+from .api_app import WORKFLOW_APP
+from .db_app import BackendAPI, ContainerAPI, DB_STRUCTURE, DBInitManager, DBStructure
 
-__all__ = ['PIKATask', 'Workflow', 'PIKAAgent', 'PIKAModel', 'TaskResponse', 
+__all__ = ['PIKATask', 'Workflow', 'PIKAAgent', 'PIKAModel', 'TaskResponse', 'DB_STRUCTURE', 'DBInitManager', 'DBStructure',
            'FunctionConfig', 'ToolFunction', 'LLMChatOutput', 'SearchOutput', 'MessageDict', 'DatabaseTaskResponse',
            'BasicAgentTask', 'PromptAgentTask', 'APITask', 'TemplatedTask', 'PIKAChat', 'ChatExecutionFunctionality',
-           'api_app', 'BackendAPI', 'available_task_types', 'ContainerAPI', 'Prompt']
+           'WORKFLOW_APP', 'BackendAPI', 'available_task_types', 'ContainerAPI', 'Prompt']
