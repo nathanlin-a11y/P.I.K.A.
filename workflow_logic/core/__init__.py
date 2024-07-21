@@ -1,5 +1,6 @@
 from .agent import PIKAAgent
-from .chat import PIKAChat, ChatExecutionFunctionality
+from .chat import PIKAChat
+from .chat_functionality import ChatExecutionFunctionality
 from .model import PIKAModel
 from .parameters import ParameterDefinition, FunctionParameters
 from .prompt import Prompt
@@ -11,5 +12,5 @@ from .api import APIManager, API
 __all__ = ['PIKATask', 'Workflow', 'PIKAAgent', 'PIKAModel', 'BasicAgentTask', 'PromptAgentTask', 'APITask', 
            'TemplatedTask', 'Workflow', 'CVGenerationTask', 'RedditSearchTask', 'ExaSearchTask', 'WikipediaSearchTask', 'GoogleSearchTask',
            'ArxivSearchTask', 'CodeGenerationLLMTask', 'CodeExecutionLLMTask', 'CheckTask', 'Prompt', 'PIKAChat', 
-            'ChatExecutionFunctionality', 'ParameterDefinition', 'FunctionParameters', 'TaskResponse', 'DatabaseTaskResponse', 'MessageDict',
+            'ParameterDefinition', 'FunctionParameters', 'TaskResponse', 'DatabaseTaskResponse', 'MessageDict', 'ChatExecutionFunctionality',
            'OutputInterface', 'SearchResult', 'StringOutput', 'LLMChatOutput', 'SearchOutput', 'WorkflowOutput', 'APIManager', 'API']
