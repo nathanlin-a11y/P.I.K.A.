@@ -103,3 +103,13 @@ export interface ChatComponentProps {
     handleAgentClick?: (agentId: string) => void;
     showHeaders?: boolean;
 }
+
+export const getDefaultChatForm = (): Partial<PIKAChat> => ({
+    name: '',
+    messages: [],
+    pika_agent: undefined,
+    executor: undefined,
+    model_id: undefined,
+    functions: [],
+    task_responses: [],
+});

@@ -1,9 +1,11 @@
-import { PIKAAgent } from './AgentTypes';
+import { PIKAAgent } from "./AgentTypes";
 import { Prompt } from "./PromptTypes";
 import { FunctionParameters } from "./ParameterTypes";
 import { PIKAModel } from './ModelTypes';
+import { ApiType } from './ApiTypes';
+import { API } from './ApiTypes';
 
-export type TaskType = "CVGenerationTask" | "RedditSearchTask" | "APITask" | "WikipediaSearchTask" | "GoogleSearchTask" | "ExaSearchTask" | "ArxivSearchTask" | "BasicAgentTask" | "PromptAgentTask" | "CheckTask" | "CodeGenerationLLMTask" | "CodeExecutionLLMTask" | "AgentWithFunctions" | "Workflow";
+export type TaskType = "CVGenerationTask" | "RedditSearchTask" | "APITask" | "WikipediaSearchTask" | "GoogleSearchTask" | "ExaSearchTask" | "ArxivSearchTask" | "BasicAgentTask" | "PromptAgentTask" | "CheckTask" | "CodeGenerationLLMTask" | "CodeExecutionLLMTask" | "Workflow";
 
 export interface PIKATask {
   task_name: string;
@@ -12,14 +14,14 @@ export interface PIKATask {
   input_variables: FunctionParameters | null;
   exit_codes: { [key: string]: string };
   recursive: boolean;
-  templates: { [key: string]: Prompt };
+  templates: { [key: string]: Prompt | null };
   tasks: { [key: string]: PIKATask };
   valid_languages: string[];
   timeout: number | null;
   prompts_to_add: { [key: string]: Prompt } | null;
   exit_code_response_map: { [key: string]: number } | null;
   start_task?: string | null;
-  required_apis?: string[] | null;
+  required_apis?: ApiType[] | null;
   model_id: PIKAModel | null;
   task_selection_method?: CallableFunction | null;
   tasks_end_code_routing?: { [key: string]: { [key: number]: any } } | null;
@@ -69,54 +71,6 @@ export const convertToPIKATask = (data: any): PIKATask => {
 
 export const DefaultPIKATask: PIKATask = convertToPIKATask({});
 
-// Base interface for all task forms
-export interface BaseTaskForm {
-  task_name: string;
-  task_description: string;
-  task_type: TaskType;
-  agent: PIKAAgent | null;
-  human_input: boolean;
-  input_variables: FunctionParameters | null;
-  templates: { [key: string]: Prompt };
-  prompts_to_add: { [key: string]: Prompt } | null;
-}
-
-export interface PromptAgentTaskForm extends BaseTaskForm { }
-
-export interface AgentWithFunctionsForm extends BaseTaskForm {
-  tasks: { [key: string]: PIKATask };
-  execution_agent: PIKAAgent | null;
-}
-
-export interface CheckTaskForm extends BaseTaskForm {
-  exit_code_response_map: { [key: string]: number } | null;
-}
-
-export interface CodeExecutionLLMTaskForm extends BaseTaskForm {
-  exit_codes: { [key: string]: string };
-  valid_languages: string[];
-  timeout: number | null;
-}
-
-export interface CodeGenerationLLMTaskForm extends BaseTaskForm {
-  exit_codes: { [key: string]: string };
-}
-
-export interface WorkflowForm extends BaseTaskForm {
-  tasks: { [key: string]: PIKATask };
-  start_task: string | null;
-  max_attempts: number;
-  recursive: boolean;
-}
-
-export type AnyTaskForm = PromptAgentTaskForm | AgentWithFunctionsForm | CheckTaskForm | CodeExecutionLLMTaskForm | CodeGenerationLLMTaskForm | WorkflowForm;
-
-export type TaskFormProps<T extends AnyTaskForm> = {
-  form: T;
-  setForm: (newForm: T) => void;
-  viewOnly: boolean;
-};
-
 export interface TaskComponentProps {
   items: PIKATask[] | null;
   item: PIKATask | null;
@@ -129,3 +83,62 @@ export interface TaskComponentProps {
   isInteractable?: boolean;
   showHeaders?: boolean;
 }
+
+export interface TaskFormsProps extends TaskComponentProps {
+  handleAccordionToggle: (accordion: string | null) => void;
+  activeAccordion: string | null;
+  handleViewDetails: (type: 'agent' | 'executor' | 'task' | 'api' | 'template' | 'prompt', item_id: string) => void;
+  apis: API[];
+}
+
+export const getDefaultTaskForm = (taskType: TaskType): PIKATask => {
+  const baseForm: PIKATask = {
+    task_name: '',
+    task_description: '',
+    task_type: taskType,
+    agent: null,
+    execution_agent: null,
+    human_input: false,
+    input_variables: null,
+    templates: {},
+    prompts_to_add: null,
+    tasks: {},
+    required_apis: [],
+    exit_codes: {},
+    recursive: false,
+    valid_languages: [],
+    timeout: null,
+    exit_code_response_map: null,
+    start_task: null,
+    model_id: null,
+    task_selection_method: null,
+    tasks_end_code_routing: null,
+    max_attempts: 3
+  };
+
+  switch (taskType) {
+    case 'CheckTask':
+      return { ...baseForm, exit_code_response_map: {} };
+    case 'CodeExecutionLLMTask':
+      return { ...baseForm, valid_languages: ['python', 'javascript'], timeout: 30000 };
+    case 'CodeGenerationLLMTask':
+      return { ...baseForm };
+    case 'Workflow':
+      return { ...baseForm, recursive: true };
+    case 'APITask':
+    case 'WikipediaSearchTask':
+    case 'GoogleSearchTask':
+    case 'ExaSearchTask':
+    case 'ArxivSearchTask':
+    case 'RedditSearchTask':
+      return {
+        ...baseForm,
+        task_name: '',
+        task_description: '',
+        input_variables: null,
+        required_apis: [],
+      };
+    default:
+      return baseForm;
+  }
+};

@@ -1,39 +1,7 @@
 import { dbAxiosInstance, taskAxiosInstance } from './axiosInstance';
-import { PIKAAgent, convertToPIKAAgent } from '../utils/AgentTypes';
 import { PIKAChat, convertToPIKAChat } from '../utils/ChatTypes';
-import { PIKAModel, convertToPIKAModel } from '../utils/ModelTypes';
-import { PIKATask, convertToPIKATask } from '../utils/TaskTypes';
-import { Prompt, convertToPrompt } from '../utils/PromptTypes';
 import { TaskResponse, convertToTaskResponse } from '../utils/TaskResponseTypes';
-import { ParameterDefinition, convertToParameterDefinition } from '../utils/ParameterTypes';
-import { User, convertToUser } from '../utils/UserTypes';
-import { API, convertToAPI } from '../utils/ApiTypes';
-
-export type CollectionName = 'agents' | 'chats' | 'models' | 'tasks' | 'prompts' | 'taskresults' | 'users' | 'parameters' | 'apis';
-
-export type CollectionType = {
-  agents: PIKAAgent;
-  chats: PIKAChat;
-  models: PIKAModel;
-  tasks: PIKATask;
-  prompts: Prompt;
-  taskresults: TaskResponse;
-  users: User;
-  parameters: ParameterDefinition;
-  apis: API;
-};
-
-const converters: { [K in CollectionName]: (data: any) => CollectionType[K] } = {
-  agents: convertToPIKAAgent,
-  chats: convertToPIKAChat,
-  models: convertToPIKAModel,
-  tasks: convertToPIKATask,
-  prompts: convertToPrompt,
-  taskresults: convertToTaskResponse,
-  users: convertToUser,
-  parameters: convertToParameterDefinition,
-  apis: convertToAPI,
-};
+import { CollectionName, CollectionType, converters } from '../utils/CollectionTypes';
 
 export const fetchItem = async <T extends CollectionName>(
   collectionName: T,
@@ -86,16 +54,6 @@ export const updateItem = async <T extends CollectionName>(
     return data;
   } catch (error) {
     console.error(`Error updating item in ${collectionName}:`, error);
-    throw error;
-  }
-};
-
-export const fetchChatById = async (chatId: string): Promise<PIKAChat> => {
-  try {
-    const response = await dbAxiosInstance.get(`/chats/${chatId}`);
-    return convertToPIKAChat(response.data);
-  } catch (error) {
-    console.error('Error fetching chat:', error);
     throw error;
   }
 };
