@@ -15,8 +15,8 @@ const ModelTableView: React.FC<ModelComponentProps> = ({
       render: (model: PIKAModel) => model.model_name
     },
     {
-      header: 'Deployment',
-      render: (model: PIKAModel) => model.deployment || 'N/A'
+      header: 'API',
+      render: (model: PIKAModel) => model.api_name || 'N/A'
     },
     {
       header: 'Created At',

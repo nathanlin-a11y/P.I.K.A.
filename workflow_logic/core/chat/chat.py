@@ -3,7 +3,7 @@ import traceback
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict, Callable, Any
 from bson import ObjectId
-from workflow_logic.core.communication import MessageDict
+from workflow_logic.util.communication import MessageDict
 from workflow_logic.core.model import PIKAModel
 from workflow_logic.core.agent import PIKAAgent
 from workflow_logic.core.parameters import ToolFunction
@@ -69,7 +69,7 @@ class PIKAChat(BaseModel):
                 if not self.messages: self.messages = []
                 self.messages.append(MessageDict(role="user", content=new_message, generated_by="user", type="text"))
             
-            new_messages = await self.pika_agent.generate_response(api_manager, messages=self.messages, tool_map=self.tool_map(api_manager), tools_list=self.tool_list(api_manager))
+            new_messages = await self.pika_agent.generate_response(api_manager=api_manager, messages=self.messages, tool_map=self.tool_map(api_manager), tools_list=self.tool_list(api_manager))
             LOGGER.info(f"New messages generated: {new_messages}")
             self.messages.extend(new_messages)
             return new_messages
