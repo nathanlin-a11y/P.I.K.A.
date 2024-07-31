@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { TaskResponse } from '../utils/TaskResponseTypes';
 import { PIKAAgent } from '../utils/AgentTypes';
 import { PIKATask } from '../utils/TaskTypes';
@@ -47,7 +47,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     const [currentChat, setCurrentChat] = useState<PIKAChat | null>(null);
     const { user } = useAuth();
 
-    const fetchChats = async () => {
+    const fetchChats = useCallback(async () => {
         try {
             const chats = await fetchItem('chats') as PIKAChat[];
             console.log('Fetched chats:', chats);
@@ -55,13 +55,13 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         } catch (error) {
             console.error('Error fetching chats:', error);
         }
-    };
+    }, [fetchItem]);
 
     useEffect(() => {
         if (user) {
             fetchChats();
         }
-    }, [user]);
+    }, [user, fetchChats]);
 
     const fetchChatById = async (chatId: string): Promise<PIKAChat> => {
         try {

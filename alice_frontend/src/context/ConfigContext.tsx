@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { PIKAModel } from '../utils/ModelTypes';
 import { ParameterDefinition } from '../utils/ParameterTypes';
 import { Prompt } from '../utils/PromptTypes';
@@ -9,7 +9,7 @@ import { useApi } from './ApiContext';
 import { PIKAChat } from '../utils/ChatTypes';
 import { API } from '../utils/ApiTypes';
 
-export type ConfigItemType = 'Agent' | 'Model' | 'Parameter' | 'Prompt' | 'Task' | 'TaskResponse' | 'Chat' | 'API'; 
+export type ConfigItemType = 'Agent' | 'Model' | 'Parameter' | 'Prompt' | 'Task' | 'TaskResponse' | 'Chat' | 'API';
 
 interface ConfigContextType {
   agents: PIKAAgent[];
@@ -21,7 +21,7 @@ interface ConfigContextType {
   selectedItem: PIKAAgent | PIKAModel | ParameterDefinition | Prompt | PIKATask | TaskResponse | PIKAChat | API | null;
   selectedItemType: ConfigItemType | null;
   setSelectedItem: (item: PIKAAgent | PIKAModel | ParameterDefinition | Prompt | PIKATask | TaskResponse | PIKAChat | API | null) => void;
-  setSelectedItemType: (type: ConfigItemType | null) => void; // Updated to allow null
+  setSelectedItemType: (type: ConfigItemType | null) => void;
   refreshItems: () => Promise<void>;
 }
 
@@ -44,26 +44,27 @@ export const ConfigProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [tasks, setTasks] = useState<PIKATask[]>([]);
   const [apis, setApis] = useState<API[]>([]);
   const [selectedItem, setSelectedItem] = useState<PIKAAgent | PIKAModel | ParameterDefinition | Prompt | PIKATask | TaskResponse | PIKAChat | API | null>(null);
-  const [selectedItemType, setSelectedItemType] = useState<ConfigItemType | null>("Agent"); // Updated to allow null
+  const [selectedItemType, setSelectedItemType] = useState<ConfigItemType | null>("Agent");
 
-  const refreshItems = async () => {
+  const refreshItems = useCallback(async () => {
     const fetchedAgents = await fetchItem('agents');
     const fetchedModels = await fetchItem('models');
     const fetchedParameters = await fetchItem('parameters');
     const fetchedPrompts = await fetchItem('prompts');
     const fetchedTasks = await fetchItem('tasks');
     const fetchedApis = await fetchItem('apis');
+
     setAgents(fetchedAgents as PIKAAgent[]);
     setModels(fetchedModels as PIKAModel[]);
     setParameters(fetchedParameters as ParameterDefinition[]);
     setPrompts(fetchedPrompts as Prompt[]);
     setTasks(fetchedTasks as PIKATask[]);
     setApis(fetchedApis as API[]);
-  };
+  }, [fetchItem]);
 
   useEffect(() => {
     refreshItems();
-  }, []);
+  }, [refreshItems]);
 
   const value: ConfigContextType = {
     agents,
