@@ -25,7 +25,6 @@ class PIKAChat(BaseModel):
         messages (Optional[List[MessageDict]]): List of messages in the conversation history.
         pika_agent (PIKAAgent): The main AI agent for the chat.
         functions (Optional[List[PIKATask]]): List of available functions/tasks for the agent.
-        model_id (PIKAModel): The language model associated with the chat.
 
     Methods:
         tool_list(api_manager: APIManager) -> List[FunctionConfig]:
@@ -50,7 +49,6 @@ class PIKAChat(BaseModel):
         ), 
         description="The PIKA agent object. Default is base PIKA Agent.")
     functions: Optional[List[PIKATask]] = Field([], description="List of functions to be registered with the agent")
-    model_id: PIKAModel = Field(None, description="The model object for the chat conversation")
     model_config = ConfigDict(protected_namespaces=(), json_encoders = {ObjectId: str})
 
     def tool_list(self, api_manager: APIManager) -> List[ToolFunction]:
@@ -65,9 +63,8 @@ class PIKAChat(BaseModel):
 
     async def generate_response(self, api_manager: APIManager, new_message: Optional[str] = None) -> List[MessageDict]:
         try:
-            if new_message:
-                if not self.messages: self.messages = []
-                self.messages.append(MessageDict(role="user", content=new_message, generated_by="user", type="text"))
+            if not self.messages: self.messages = []
+            if new_message: self.messages.append(MessageDict(role="user", content=new_message, generated_by="user", type="text"))
             
             new_messages = await self.pika_agent.generate_response(api_manager=api_manager, messages=self.messages, tool_map=self.tool_map(api_manager), tools_list=self.tool_list(api_manager))
             LOGGER.info(f"New messages generated: {new_messages}")
@@ -89,7 +86,11 @@ class PIKAChat(BaseModel):
         
         # Check LLM API
         try:
-            api_manager.retrieve_api_data("llm_api", self.model_id)
+            data = api_manager.retrieve_api_data("llm_api", self.pika_agent.model_id)
+            if not data:
+                result["status"] = "warning"
+                result["llm_api"] = "not_found"
+                result["warnings"].append(f"Required API llm_api is not active or not found.")
         except ValueError as e:
             result["status"] = "warning"
             result["llm_api"] = "invalid"

@@ -2,7 +2,6 @@ import { User } from './UserTypes';
 import { PIKATask, convertToPIKATask } from './TaskTypes';
 import { PIKAAgent, convertToPIKAAgent } from './AgentTypes';
 import { TaskResponse } from './TaskResponseTypes';
-import { PIKAModel } from './ModelTypes';
 
 export interface PIKAChat {
     _id: string;
@@ -10,8 +9,6 @@ export interface PIKAChat {
     messages: MessageType[];
     pika_agent: PIKAAgent;
     functions?: PIKATask[];
-    executor: PIKAAgent;
-    model_id?: PIKAModel;
     task_responses?: TaskResponse[];
     created_by?: User;
     updated_by?: User;
@@ -62,8 +59,6 @@ export const convertToPIKAChat = (data: any): PIKAChat => {
         messages: (data?.messages || []).map(convertToMessageType),
         pika_agent: convertToPIKAAgent(data?.pika_agent),
         functions: (data?.functions || []).map(convertToPIKATask),
-        executor: convertToPIKAAgent(data?.executor),
-        model_id: data?.model_id || undefined,
         task_responses: (data?.task_responses || []).map((response: any) => ({
             ...response,
             createdAt: response.createdAt ? new Date(response.createdAt) : undefined,
@@ -83,8 +78,6 @@ export interface MessageProps {
 export interface CreatePIKAChat {
     name: string;
     pika_agent: string | PIKAAgent;
-    executor: string | PIKAAgent;
-    model_id?: string | PIKAModel;
     functions?: string[] | PIKATask[];
 }
 
@@ -108,8 +101,6 @@ export const getDefaultChatForm = (): Partial<PIKAChat> => ({
     name: '',
     messages: [],
     pika_agent: undefined,
-    executor: undefined,
-    model_id: undefined,
     functions: [],
     task_responses: [],
 });
