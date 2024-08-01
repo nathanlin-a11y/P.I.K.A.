@@ -1,7 +1,6 @@
 from typing import Union, Dict, Any
-from workflow_logic.core.chat import PIKAChat
-from workflow_logic.core.tasks import PIKATask
-from workflow_logic.core.api.api_manager import APIManager
+from workflow_logic.core import PIKAChat, PIKATask, APIManager
+
 # Utility function for deep API availability check
 async def deep_api_check(item: Union[PIKATask, PIKAChat], api_manager: APIManager) -> Dict[str, Any]:
     if isinstance(item, PIKATask) or isinstance(item, PIKAChat):
