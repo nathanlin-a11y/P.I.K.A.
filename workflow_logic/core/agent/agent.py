@@ -5,8 +5,8 @@ from typing import Dict, Any, List, Optional, Tuple, Callable
 from workflow_logic.core.parameters import ToolFunction
 from workflow_logic.core.prompt import Prompt
 from workflow_logic.core.model import PIKAModel
-from workflow_logic.core.api import APIManager, ApiType
-from workflow_logic.util import MessageDict, LOGGER
+from workflow_logic.core.api import APIManager
+from workflow_logic.util import MessageDict, LOGGER, ApiType
 
 
 class PIKAAgent(BaseModel):

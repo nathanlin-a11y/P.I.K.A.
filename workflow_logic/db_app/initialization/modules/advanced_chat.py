@@ -12,7 +12,21 @@ advanced_chat_module = AdvancedChatModule(
         "chats": [
             {
                 "key": "advanced_chat",
-                "name": "Advanced Chat",
+                "name": "Advanced Chat (GPT)",
+                "messages": [],
+                "pika_agent": "gpt_pika",  # Reference to agent key from base_chat
+                "functions": ["search_hub", "coding_workflow"],  # Reference to task keys from base_tasks and coding_workflow
+            },
+            {
+                "key": "advanced_chat_claude",
+                "name": "Advanced Chat (Claude)",
+                "messages": [],
+                "pika_agent": "claude_pika",  # Reference to agent key from base_chat
+                "functions": ["search_hub", "coding_workflow"],  # Reference to task keys from base_tasks and coding_workflow
+            },
+            {
+                "key": "advanced_chat_lm_studio",
+                "name": "Advanced Chat (LM Studio)",
                 "messages": [],
                 "pika_agent": "lm_studio_pika",  # Reference to agent key from base_chat
                 "functions": ["search_hub", "coding_workflow"],  # Reference to task keys from base_tasks and coding_workflow
