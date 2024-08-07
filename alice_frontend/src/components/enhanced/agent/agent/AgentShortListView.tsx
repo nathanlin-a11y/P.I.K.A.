@@ -1,5 +1,5 @@
 import React from 'react';
-import { AgentComponentProps, PIKAAgent } from '../../../../utils/AgentTypes';
+import { AgentComponentProps, PIKAAgent } from '../../../../types/AgentTypes';
 import EnhancedShortListView from '../../common/enhanced_component/ShortListView';
 
 const AgentShortListView: React.FC<AgentComponentProps> = ({

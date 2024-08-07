@@ -5,9 +5,9 @@ import ChatTableView from './ChatTableView';
 import ChatCardView from './ChatCardView';
 import ChatFullView from './ChatFullView';
 import ChatShortListView from './ChatShortListView';
-import { PIKAChat } from '../../../../utils/ChatTypes';
+import { PIKAChat } from '../../../../types/ChatTypes';
 import BaseDbElement, { BaseDbElementProps } from '../../common/enhanced_component/BaseDbElement';
-import { ChatComponentProps } from '../../../../utils/ChatTypes';
+import { ChatComponentProps } from '../../../../types/ChatTypes';
 
 type BaseChatMode = BaseDbElementProps<PIKAChat>['mode'];
 type ExtendedChatMode = 'list' | 'shortList' | 'card' | 'full' | 'table';

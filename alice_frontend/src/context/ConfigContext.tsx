@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { PIKAModel } from '../utils/ModelTypes';
-import { ParameterDefinition } from '../utils/ParameterTypes';
-import { Prompt } from '../utils/PromptTypes';
-import { TaskResponse } from '../utils/TaskResponseTypes';
-import { PIKAAgent } from '../utils/AgentTypes';
-import { PIKATask } from '../utils/TaskTypes';
+import { PIKAModel } from '../types/ModelTypes';
+import { ParameterDefinition } from '../types/ParameterTypes';
+import { Prompt } from '../types/PromptTypes';
+import { TaskResponse } from '../types/TaskResponseTypes';
+import { PIKAAgent } from '../types/AgentTypes';
+import { PIKATask } from '../types/TaskTypes';
 import { useApi } from './ApiContext';
-import { PIKAChat } from '../utils/ChatTypes';
-import { API } from '../utils/ApiTypes';
+import { PIKAChat } from '../types/ChatTypes';
+import { API } from '../types/ApiTypes';
 
 export type ConfigItemType = 'Agent' | 'Model' | 'Parameter' | 'Prompt' | 'Task' | 'TaskResponse' | 'Chat' | 'API';
 

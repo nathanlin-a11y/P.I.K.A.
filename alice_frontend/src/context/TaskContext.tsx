@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode, useCallback } from 'react';
-import { TaskResponse } from '../utils/TaskResponseTypes';
+import { TaskResponse } from '../types/TaskResponseTypes';
 import { useApi } from './ApiContext';
-import { PIKATask } from '../utils/TaskTypes';
+import { PIKATask } from '../types/TaskTypes';
 
 export interface RecentExecution {
   taskId: string;

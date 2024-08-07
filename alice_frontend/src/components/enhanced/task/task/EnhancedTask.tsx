@@ -1,6 +1,6 @@
 import React from 'react';
-import { PIKAChat } from '../../../../utils/ChatTypes';
-import { PIKATask, TaskComponentProps } from '../../../../utils/TaskTypes';
+import { PIKAChat } from '../../../../types/ChatTypes';
+import { PIKATask, TaskComponentProps } from '../../../../types/TaskTypes';
 import BaseDbElement, { BaseDbElementProps } from '../../common/enhanced_component/BaseDbElement';
 import TaskFlexibleView from './TaskFlexibleView';
 import TaskCardView from './TaskCardView';

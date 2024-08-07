@@ -5,7 +5,7 @@ import {
     Alert
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { PIKATask, TaskComponentProps } from '../../../../utils/TaskTypes';
+import { PIKATask, TaskComponentProps } from '../../../../types/TaskTypes';
 import useStyles from '../TaskStyles';
 import { useTask } from '../../../../context/TaskContext';
 import TaskCardView from './TaskCardView';

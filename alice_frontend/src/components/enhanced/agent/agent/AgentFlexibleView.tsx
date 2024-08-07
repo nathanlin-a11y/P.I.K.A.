@@ -5,9 +5,9 @@ import {
     Switch,
     Dialog
 } from '@mui/material';
-import { AgentComponentProps, PIKAAgent, getDefaultAgentForm } from '../../../../utils/AgentTypes';
-import { Prompt } from '../../../../utils/PromptTypes';
-import { PIKAModel } from '../../../../utils/ModelTypes';
+import { AgentComponentProps, PIKAAgent, getDefaultAgentForm } from '../../../../types/AgentTypes';
+import { Prompt } from '../../../../types/PromptTypes';
+import { PIKAModel } from '../../../../types/ModelTypes';
 import EnhancedSelect from '../../common/enhanced_select/EnhancedSelect';
 import EnhancedModel from '../../model/model/EnhancedModel';
 import EnhancedPrompt from '../../prompt/prompt/EnhancedPrompt';

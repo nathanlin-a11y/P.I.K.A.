@@ -1,5 +1,5 @@
 import React from 'react';
-import { PIKAChat, ChatComponentProps } from '../../../../utils/ChatTypes';
+import { PIKAChat, ChatComponentProps } from '../../../../types/ChatTypes';
 import EnhancedShortListView from '../../common/enhanced_component/ShortListView';
 
 const ChatShortListView: React.FC<ChatComponentProps> = ({

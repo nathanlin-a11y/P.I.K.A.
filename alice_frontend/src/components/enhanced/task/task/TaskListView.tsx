@@ -1,5 +1,5 @@
 import React from 'react';
-import { PIKATask, TaskComponentProps } from '../../../../utils/TaskTypes';
+import { PIKATask, TaskComponentProps } from '../../../../types/TaskTypes';
 import { Typography } from '@mui/material';
 import EnhancedListView from '../../common/enhanced_component/ListView';
 

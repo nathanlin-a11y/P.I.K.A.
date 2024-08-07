@@ -3,13 +3,13 @@ import {
     TextField,
     Dialog
 } from '@mui/material';
-import { ChatComponentProps, PIKAChat, getDefaultChatForm } from '../../../../utils/ChatTypes';
+import { ChatComponentProps, PIKAChat, getDefaultChatForm } from '../../../../types/ChatTypes';
 import EnhancedSelect from '../../common/enhanced_select/EnhancedSelect';
 import EnhancedModel from '../../model/model/EnhancedModel';
 import EnhancedAgent from '../../agent/agent/EnhancedAgent';
 import EnhancedTask from '../../task/task/EnhancedTask';
-import { PIKAAgent } from '../../../../utils/AgentTypes';
-import { PIKATask } from '../../../../utils/TaskTypes';
+import { PIKAAgent } from '../../../../types/AgentTypes';
+import { PIKATask } from '../../../../types/TaskTypes';
 import { useApi } from '../../../../context/ApiContext';
 import GenericFlexibleView from '../../common/enhanced_component/FlexibleView';
 

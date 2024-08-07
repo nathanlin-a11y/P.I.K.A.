@@ -11,15 +11,15 @@ import {
   MenuItem,
   Chip,
 } from '@mui/material';
-import { TaskFormsProps } from '../../../../../utils/TaskTypes';
 import EnhancedSelect from '../../../common/enhanced_select/EnhancedSelect';
 import EnhancedAgent from '../../../agent/agent/EnhancedAgent';
 import EnhancedTask from '../../../task/task/EnhancedTask';
-import { PIKAAgent } from '../../../../../utils/AgentTypes';
-import { PIKATask } from '../../../../../utils/TaskTypes';
-import { ApiType } from '../../../../../utils/ApiTypes';
+import { TaskFormsProps } from '../../../../../types/TaskTypes';
+import { PIKAAgent } from '../../../../../types/AgentTypes';
+import { PIKATask } from '../../../../../types/TaskTypes';
+import { ApiType } from '../../../../../types/ApiTypes';
+import { FunctionParameters } from '../../../../../types/ParameterTypes';
 import FunctionDefinitionBuilder from '../../../common/function_select/Function';
-import { FunctionParameters } from '../../../../../utils/ParameterTypes';
 import { useApi } from '../../../../../context/ApiContext';
 
 const BasicAgentTask: React.FC<TaskFormsProps> = ({

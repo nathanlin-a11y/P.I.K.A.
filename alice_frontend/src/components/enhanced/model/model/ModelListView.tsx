@@ -1,5 +1,5 @@
 import React from 'react';
-import { PIKAModel, ModelComponentProps } from '../../../../utils/ModelTypes';
+import { PIKAModel, ModelComponentProps } from '../../../../types/ModelTypes';
 import { Typography } from '@mui/material';
 import EnhancedListView from '../../common/enhanced_component/ListView';
 

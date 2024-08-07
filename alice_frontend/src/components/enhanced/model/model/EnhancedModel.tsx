@@ -4,9 +4,9 @@ import ModelListView from './ModelListView';
 import ModelTableView from './ModelTableView';
 import ModelShortListView from './ModelShortListView';
 import ModelCardView from './ModelCardView';
-import { PIKAModel } from '../../../../utils/ModelTypes';
+import { PIKAModel } from '../../../../types/ModelTypes';
 import BaseDbElement, { BaseDbElementProps } from '../../common/enhanced_component/BaseDbElement';
-import { ModelComponentProps } from '../../../../utils/ModelTypes';
+import { ModelComponentProps } from '../../../../types/ModelTypes';
 
 type BaseModelMode = BaseDbElementProps<PIKAModel>['mode'];
 type ExtendedModelMode = 'list' | 'shortList' | 'card' | 'table';
