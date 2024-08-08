@@ -23,6 +23,7 @@ interface ConfigContextType {
   setSelectedItem: (item: PIKAAgent | PIKAModel | ParameterDefinition | Prompt | PIKATask | TaskResponse | PIKAChat | API | null) => void;
   setSelectedItemType: (type: ConfigItemType | null) => void;
   refreshItems: () => Promise<void>;
+  triggerItemDialog: (itemType: ConfigItemType, itemId: string) => void;
 }
 
 const ConfigContext = createContext<ConfigContextType | undefined>(undefined);
@@ -44,7 +45,7 @@ export const ConfigProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [tasks, setTasks] = useState<PIKATask[]>([]);
   const [apis, setApis] = useState<API[]>([]);
   const [selectedItem, setSelectedItem] = useState<PIKAAgent | PIKAModel | ParameterDefinition | Prompt | PIKATask | TaskResponse | PIKAChat | API | null>(null);
-  const [selectedItemType, setSelectedItemType] = useState<ConfigItemType | null>("Agent");
+  const [selectedItemType, setSelectedItemType] = useState<ConfigItemType | null>(null);
 
   const refreshItems = useCallback(async () => {
     const fetchedAgents = await fetchItem('agents');
@@ -66,18 +67,24 @@ export const ConfigProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     refreshItems();
   }, [refreshItems]);
 
+  const triggerItemDialog = useCallback((itemType: ConfigItemType, itemId: string) => {
+    setSelectedItemType(itemType);
+    setSelectedItem({ _id: itemId } as any);
+  }, []);
+
   const value: ConfigContextType = {
     agents,
     models,
     parameters,
     prompts,
     tasks,
+    apis,
     selectedItem,
     selectedItemType,
     setSelectedItem,
     setSelectedItemType,
     refreshItems,
-    apis,
+    triggerItemDialog,
   };
 
   return <ConfigContext.Provider value={value}>{children}</ConfigContext.Provider>;

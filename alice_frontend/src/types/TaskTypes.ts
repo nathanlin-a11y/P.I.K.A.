@@ -3,6 +3,7 @@ import { Prompt } from "./PromptTypes";
 import { FunctionParameters } from "./ParameterTypes";
 import { PIKAModel } from './ModelTypes';
 import { ApiType } from './ApiTypes';
+import { HandleClickProps } from "./CollectionTypes";
 import { API, APIEngine } from './ApiTypes';
 
 export type TaskType = "CVGenerationTask" | "RedditSearchTask" | "APITask" | "WikipediaSearchTask" | "GoogleSearchTask" | "ExaSearchTask" | "ArxivSearchTask" | "BasicAgentTask" | "PromptAgentTask" | "CheckTask" | "CodeGenerationLLMTask" | "CodeExecutionLLMTask" | "Workflow";
@@ -71,7 +72,7 @@ export const convertToPIKATask = (data: any): PIKATask => {
 
 export const DefaultPIKATask: PIKATask = convertToPIKATask({});
 
-export interface TaskComponentProps {
+export interface TaskComponentProps extends HandleClickProps {
   items: PIKATask[] | null;
   item: PIKATask | null;
   mode: 'create' | 'view' | 'edit';
@@ -82,10 +83,6 @@ export interface TaskComponentProps {
   onExecute?: () => Promise<any>;
   isInteractable?: boolean;
   showHeaders?: boolean;
-  handleModelClick?: (modelId: string) => void;
-  handleAgentClick?: (agentId: string) => void;
-  handleTaskClick?: (taskId: string) => void;
-  handlePromptClick?: (promptId: string) => void;
 }
 
 export interface TaskFormsProps extends TaskComponentProps {

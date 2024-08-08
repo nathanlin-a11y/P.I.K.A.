@@ -3,6 +3,7 @@ import { PIKATask, convertToPIKATask } from './TaskTypes';
 import { PIKAAgent, convertToPIKAAgent } from './AgentTypes';
 import { ToolCall } from './ParameterTypes';
 import { TaskResponse } from './TaskResponseTypes';
+import { HandleClickProps } from './CollectionTypes';
 
 export interface PIKAChat {
     _id: string;
@@ -78,7 +79,7 @@ export interface MessageProps {
     message: MessageType
 }
 
-export interface ChatComponentProps {
+export interface ChatComponentProps extends HandleClickProps {
     items: PIKAChat[] | null;
     item: PIKAChat | null;
     onChange: (newItem: Partial<PIKAChat>) => void;
@@ -88,10 +89,6 @@ export interface ChatComponentProps {
     onInteraction?: (chat: PIKAChat) => void;
     onView?: (chat: PIKAChat) => void;
     showRegenerate?: boolean;
-    handleTaskClick?: (taskId: string) => void;
-    handleTaskResultClick?: (taskResultId: string) => void;
-    handleAgentClick?: (agentId: string) => void;
-    handleMessageClick?: (messageId: string) => void;
     showHeaders?: boolean;
 }
 

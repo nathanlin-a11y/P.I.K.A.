@@ -1,5 +1,6 @@
 import { User, convertToUser } from "./UserTypes";
 import { LlmProvider } from "./ApiTypes";
+import { HandleClickProps } from "./CollectionTypes";
 
 export interface PIKAModel {
     _id?: string;
@@ -37,7 +38,7 @@ export const convertToPIKAModel = (data: any): PIKAModel => {
     };
 };
 
-export interface ModelComponentProps {
+export interface ModelComponentProps extends HandleClickProps {
   items: PIKAModel[] | null;
   item: PIKAModel | null;
   onChange: (newItem: Partial<PIKAModel>) => void;

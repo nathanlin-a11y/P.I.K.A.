@@ -49,6 +49,22 @@ class PIKAChat(BaseModel):
     functions: Optional[List[PIKATask]] = Field([], description="List of functions to be registered with the agent")
     model_config = ConfigDict(protected_namespaces=(), json_encoders = {ObjectId: str})
 
+    def model_dump(self, *args, **kwargs):
+        data = super().model_dump(*args, **kwargs)
+        
+        # Handle messages
+        if self.messages:
+            data['messages'] = [message.model_dump(*args, **kwargs) for message in self.messages]
+        
+        # Handle pika_agent
+        data['pika_agent'] = self.pika_agent.model_dump(*args, **kwargs)
+        
+        # Handle functions
+        if self.functions:
+            data['functions'] = [function.model_dump(*args, **kwargs) for function in self.functions]
+        
+        return data
+    
     def tool_list(self, api_manager: APIManager) -> List[ToolFunction]:
         return [func.get_function(api_manager)["tool_function"].model_dump() for func in self.functions] if self.functions else None
     
