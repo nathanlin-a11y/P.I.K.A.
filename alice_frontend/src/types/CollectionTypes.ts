@@ -9,6 +9,8 @@ import { User, convertToUser } from './UserTypes';
 import { API, convertToAPI } from './ApiTypes';
 
 export type CollectionName = 'agents' | 'chats' | 'models' | 'tasks' | 'prompts' | 'taskresults' | 'users' | 'parameters' | 'apis';
+export type CollectionElement = PIKAAgent | PIKAChat | PIKAModel | PIKATask | Prompt | TaskResponse | User | ParameterDefinition | API | User;
+export type CollectionElementString = 'Agent' | 'Model' | 'Parameter' | 'Prompt' | 'Task' | 'TaskResponse' | 'Chat' | 'API';
 
 export type CollectionType = {
     agents: PIKAAgent;

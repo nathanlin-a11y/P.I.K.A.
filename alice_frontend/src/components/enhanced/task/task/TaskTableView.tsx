@@ -1,67 +1,44 @@
 import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Tooltip
-} from '@mui/material';
-import { Visibility, ChevronRight } from '@mui/icons-material';
-import { TaskComponentProps } from '../../../../types/TaskTypes';
+import { TaskComponentProps, PIKATask } from '../../../../types/TaskTypes';
+import EnhancedTableView, { Column } from '../../common/enhanced_component/TableView';
 
 const TaskTableView: React.FC<TaskComponentProps> = ({
   items,
+  item,
   isInteractable = false,
   onInteraction,
   onView,
   showHeaders = true,
 }) => {
-  if (!items) return null;
+  const columns: Column<PIKATask>[] = [
+    {
+      header: 'Task Name',
+      render: (task: PIKATask) => task.task_name,
+      sortKey: 'task_name'
+    },
+    {
+      header: 'Description',
+      render: (task: PIKATask) => task.task_description || 'N/A',
+      sortKey: 'task_description'
+    },
+    {
+      header: 'Created At',
+      render: (task: PIKATask) => new Date(task.createdAt || '').toLocaleString(),
+      sortKey: 'createdAt'
+    }
+  ];
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        {showHeaders && (
-          <TableHead>
-            <TableRow>
-              <TableCell>Task Name</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Created At</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-        )}
-        <TableBody>
-          {items.map((task) => (
-            <TableRow key={task._id}>
-              <TableCell>{task.task_name}</TableCell>
-              <TableCell>{task.task_description || 'N/A'}</TableCell>
-              <TableCell>{new Date(task.createdAt || '').toLocaleString()}</TableCell>
-              <TableCell>
-                {onView && (
-                  <Tooltip title="View Task">
-                    <IconButton onClick={() => onView(task)}>
-                      <Visibility />
-                    </IconButton>
-                  </Tooltip>
-                )}
-                {onInteraction && (
-                  <Tooltip title="Add Task">
-                    <IconButton onClick={() => onInteraction(task)}>
-                      <ChevronRight />
-                    </IconButton>
-                  </Tooltip>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <EnhancedTableView<PIKATask>
+      items={items}
+      item={item}
+      columns={columns}
+      onView={onView}
+      onInteraction={isInteractable ? onInteraction : undefined}
+      showHeaders={showHeaders}
+      interactionTooltip="Add Task"
+      viewTooltip="View Task"
+    />
   );
 };
 

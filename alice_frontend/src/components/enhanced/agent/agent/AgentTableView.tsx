@@ -12,15 +12,17 @@ const AgentTableView: React.FC<AgentComponentProps> = ({
   const columns = [
     {
       header: 'Agent Name',
-      render: (agent: PIKAAgent) => agent.name
+      render: (agent: PIKAAgent) => agent.name,
+      sortKey: 'name'
     },
     {
       header: 'Model',
-      render: (agent: PIKAAgent) => agent.model_id?.model_name || 'N/A'
+      render: (agent: PIKAAgent) => agent.model_id?.model_name || 'N/A',
     },
     {
       header: 'Created At',
-      render: (agent: PIKAAgent) => new Date(agent.createdAt || '').toLocaleString()
+      render: (agent: PIKAAgent) => new Date(agent.createdAt || '').toLocaleString(),
+      sortKey: 'createdAt'
     }
   ];
 
