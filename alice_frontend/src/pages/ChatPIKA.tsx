@@ -57,7 +57,6 @@ const ChatPIKA: React.FC = () => {
   };
 
   const handleCreateNew = useCallback(() => {
-    console.log('Create new clicked');
     setOpenChatCreateDialog(true);
   }, []);
 
