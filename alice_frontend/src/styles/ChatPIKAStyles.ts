@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexGrow: 1,
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: '90%',
+    // maxWidth: '90%',
   },
   chatPIKAMessages: {
     flexGrow: 1,
