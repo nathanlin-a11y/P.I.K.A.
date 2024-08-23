@@ -1,7 +1,6 @@
 import pytest
 from unittest.mock import Mock
-from workflow_logic.util import TaskResponse, StringOutput
-from workflow_logic.core import FunctionParameters, ParameterDefinition, APIManager, API, PIKATask, Workflow
+from workflow_logic.core import FunctionParameters, ParameterDefinition, APIManager, API, PIKATask, Workflow, TaskResponse, StringOutput
 
 class MockTask(PIKATask):
     async def run(self, **kwargs):
