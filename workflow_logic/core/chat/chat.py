@@ -80,7 +80,13 @@ class PIKAChat(BaseModel):
             if not self.messages: self.messages = []
             if new_message: self.messages.append(MessageDict(role="user", content=new_message, generated_by="user", type="text"))
             
-            new_messages = await self.pika_agent.generate_response(api_manager=api_manager, messages=self.messages, tool_map=self.tool_map(api_manager), tools_list=self.tool_list(api_manager))
+            new_messages = await self.pika_agent.chat(
+                api_manager=api_manager, 
+                messages=self.messages, 
+                tool_map=self.tool_map(api_manager), 
+                tools_list=self.tool_list(api_manager), 
+                max_turns=self.pika_agent.max_consecutive_auto_reply,
+                )
             LOGGER.info(f"New messages generated: {new_messages}")
             self.messages.extend(new_messages)
             return new_messages
