@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 import PIKAChat from '../models/chat.model';
-import TaskResult from '../models/taskresult.model';
+import TaskResult from '../models/taskResult.model';
 import { IPIKAChatDocument, IMessage, IMessageDocument } from '../interfaces/chat.interface';
 import { getObjectId, ObjectWithId } from './utils';
 import logger from './logger';
