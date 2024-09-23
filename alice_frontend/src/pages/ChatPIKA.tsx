@@ -14,7 +14,7 @@ import ChatInput from '../components/enhanced/chat/ChatInput';
 import useStyles from '../styles/ChatPIKAStyles';
 import PlaceholderSkeleton from '../components/ui/placeholder_skeleton/PlaceholderSkeleton';
 import EnhancedCardDialog from '../components/enhanced/common/enhanced_card_dialog/EnhancedCardDialog';
-import { useCardDialog } from '../context/CardDialogContext.tsx';
+import { useCardDialog } from '../context/CardDialogContext';
 import { CollectionElementString } from '../types/CollectionTypes';
 
 const ChatPIKA: React.FC = () => {
@@ -185,8 +185,9 @@ const ChatPIKA: React.FC = () => {
         </Box>
         <Box className={classes.chatPIKAInput}>
           <ChatInput
-            handleSendMessage={handleSendMessage}
+            sendMessage={handleSendMessage}
             lastMessage={lastMessage}
+            currentChatId={currentChatId}
             chatSelected={!!currentChatId}
           />
         </Box>

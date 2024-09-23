@@ -1,5 +1,5 @@
 import { User } from "./UserTypes";
-import { PIKAModel } from "./ModelTypes";
+import { PIKAModel, ModelType } from "./ModelTypes";
 import { Prompt } from "./PromptTypes";
 import { HandleClickProps } from "./CollectionTypes";
 
@@ -10,7 +10,7 @@ export interface PIKAAgent {
   has_functions: boolean;
   has_code_exec: boolean;
   max_consecutive_auto_reply?: number;
-  model_id?: PIKAModel | null;
+  models?: { [key in ModelType]?: PIKAModel };
   created_by?: User;
   updated_by?: User;
   createdAt?: Date;
@@ -25,7 +25,7 @@ export const convertToPIKAAgent = (data: any): PIKAAgent => {
     has_functions: data?.has_functions || false,
     has_code_exec: data?.has_code_exec || false,
     max_consecutive_auto_reply: data?.max_consecutive_auto_reply || undefined,
-    model_id: data?.model_id || null,
+    models: data?.models || {},
     created_by: data?.created_by || undefined,
     updated_by: data?.updated_by || undefined,
     createdAt: data?.createdAt ? new Date(data.createdAt) : undefined,
@@ -44,11 +44,12 @@ export interface AgentComponentProps extends HandleClickProps {
   onView?: (agent: PIKAAgent) => void;
   showHeaders?: boolean;
 }
+
 export const getDefaultAgentForm = (): Partial<PIKAAgent> => ({
   name: '',
   system_message: undefined,
   max_consecutive_auto_reply: 1,
   has_functions: false,
   has_code_exec: false,
-  model_id: null
+  models: {},
 });
