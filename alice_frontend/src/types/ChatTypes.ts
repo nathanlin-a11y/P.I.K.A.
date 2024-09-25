@@ -79,7 +79,8 @@ export const convertToPIKAChat = (data: any): PIKAChat => {
 };
 
 export interface MessageProps {
-    message: MessageType
+    message: MessageType,
+    chatId?: string,
 }
 
 export interface ChatComponentProps extends HandleClickProps {
