@@ -3,7 +3,7 @@ from .chat import PIKAChat
 from .model import PIKAModel
 from .parameters import ParameterDefinition, FunctionParameters
 from .prompt import Prompt
-from .tasks import PIKATask, Workflow, BasicAgentTask, PromptAgentTask, APITask, Workflow, CodeGenerationLLMTask, CodeExecutionLLMTask, CheckTask, TaskExecutionRequest
+from .tasks import PIKATask, Workflow, BasicAgentTask, PromptAgentTask, APITask, Workflow, CodeGenerationLLMTask, CodeExecutionLLMTask, CheckTask, EmbeddingTask, TextToSpeechTask, GenerateImageTask, WebScrapeBeautifulSoupTask
 from .api import APIManager, API
 from .data_structures import ApiType, ApiName, LLMConfig, SearchOutput, MessageDict, TaskResponse, LLMChatOutput, DatabaseTaskResponse, User, UserRoles, FileReference, FileType, FileContentReference, generate_file_content_reference, OutputInterface, StringOutput, SearchResult, WorkflowOutput, ModelType
 
@@ -12,4 +12,4 @@ __all__ = ['PIKATask', 'Workflow', 'PIKAAgent', 'PIKAModel', 'BasicAgentTask', '
         'ParameterDefinition', 'FunctionParameters', 'APIManager', 'API', 'ApiType', 'ApiName', 'LLMConfig', 'SearchOutput',
         'MessageDict', 'TaskResponse', 'LLMChatOutput', 'DatabaseTaskResponse', 'User', 'UserRoles', 'FileReference',
         'FileType', 'FileContentReference', 'generate_file_content_reference', 'OutputInterface', 'StringOutput', 'SearchResult',
-        'WorkflowOutput', 'ModelType', 'TaskExecutionRequest']
+        'WorkflowOutput', 'ModelType', 'EmbeddingTask', 'TextToSpeechTask', 'GenerateImageTask','WebScrapeBeautifulSoupTask']

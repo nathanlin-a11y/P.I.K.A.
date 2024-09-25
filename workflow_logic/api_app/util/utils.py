@@ -1,4 +1,5 @@
 from typing import Union, Dict, Any
+from pydantic import BaseModel
 from workflow_logic.core import PIKAChat, PIKATask, APIManager
 
 # Utility function for deep API availability check
@@ -7,3 +8,8 @@ async def deep_api_check(item: Union[PIKATask, PIKAChat], api_manager: APIManage
         return item.deep_validate_required_apis(api_manager)
     else:
         raise ValueError(f"Unsupported item type for API check: {type(item)}")
+    
+class TaskExecutionRequest(BaseModel):
+    taskId: str
+    inputs: Dict[str, Any]
+
