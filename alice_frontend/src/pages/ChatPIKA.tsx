@@ -30,7 +30,6 @@ const ChatPIKA: React.FC = () => {
     currentChat,
     setCurrentChatId,
     addTaskToChat,
-    addTaskResultToChat,
     isTaskInChat,
   } = useChat();
   const { selectItem } = useCardDialog();
@@ -90,12 +89,6 @@ const ChatPIKA: React.FC = () => {
   const checkAndAddTask = (task: PIKATask) => {
     if (task._id && !isTaskInChat(task._id)) {
       addTaskToChat(task._id);
-    }
-  }
-
-  const checkAndAddTaskResult = (taskResult: TaskResponse) => {
-    if (taskResult._id) {
-      addTaskResultToChat(taskResult._id);
     }
   }
 

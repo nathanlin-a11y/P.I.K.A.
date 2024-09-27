@@ -38,7 +38,7 @@ const pikaChatSchema = new Schema<IPIKAChatDocument, IPIKAChatModel>({
 pikaChatSchema.methods.apiRepresentation = function (this: IPIKAChatDocument) {
   return {
     id: this._id,
-    messages: this.messages.map((message) => message.apiRepresentation()),
+    messages: this.messages.map((message) => message._id || message),
     changeHistory: this.changeHistory.map((change) => change.apiRepresentation()),
     pika_agent: this.pika_agent ? (this.pika_agent._id || this.pika_agent) : null,
     functions: this.functions.map((func) => func._id || func),

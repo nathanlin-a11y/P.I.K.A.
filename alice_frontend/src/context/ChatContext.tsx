@@ -2,7 +2,8 @@ import React, { createContext, useContext, useState, useEffect, ReactNode, useCa
 import { TaskResponse } from '../types/TaskResponseTypes';
 import { PIKAAgent } from '../types/AgentTypes';
 import { PIKATask } from '../types/TaskTypes';
-import { MessageType, PIKAChat } from '../types/ChatTypes';
+import { PIKAChat } from '../types/ChatTypes';
+import { MessageType } from '../types/MessageTypes';
 import { useAuth } from '../context/AuthContext';
 import { useApi } from './ApiContext';
 
