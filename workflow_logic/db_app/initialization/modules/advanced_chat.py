@@ -12,10 +12,10 @@ advanced_chat_module = AdvancedChatModule(
         "agents": [
             {
                 "key": "gpt_pika_adv",
-                "name": "GPT PIKA",
+                "name": "GPT PIKA (turbo)",
                 "system_message": "default_system_message",
                 "models": {
-                    "chat": "GPT4o",
+                    "chat": "GPT4-turbo",
                     "img_gen": "Dall-E-3",
                     "embeddings": "oai_embedding_large",
                     "tts": "tts-1",
