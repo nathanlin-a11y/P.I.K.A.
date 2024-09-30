@@ -1,19 +1,15 @@
-import { User } from './UserTypes';
+import { BaseDataseObject, User } from './UserTypes';
 import { PIKATask, convertToPIKATask } from './TaskTypes';
 import { PIKAAgent, convertToPIKAAgent } from './AgentTypes';
 import { HandleClickProps } from './CollectionTypes';
 import { convertToMessageType, MessageType } from './MessageTypes';
 
-export interface PIKAChat {
+export interface PIKAChat extends BaseDataseObject {
     _id: string;
     name: string;
     messages: MessageType[];
     pika_agent: PIKAAgent;
     functions?: PIKATask[];
-    created_by?: User;
-    updated_by?: User;
-    createdAt?: Date;
-    updatedAt?: Date;
 }
 
 export const convertToPIKAChat = (data: any): PIKAChat => {

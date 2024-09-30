@@ -15,6 +15,7 @@ const modelMapping: { [key: string]: string } = {
   pikachats: 'PIKAChat',
   apis: 'API',
   parameterdefinitions: 'ParameterDefinition',
+  urlreferences: 'URLReference',
 };
 
 // Get all collections in the database

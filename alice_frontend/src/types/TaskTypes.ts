@@ -5,10 +5,12 @@ import { PIKAModel } from './ModelTypes';
 import { ApiType } from './ApiTypes';
 import { HandleClickProps } from "./CollectionTypes";
 import { API, APIEngine } from './ApiTypes';
+import { BaseDataseObject } from "./UserTypes";
 
 export type TaskType = "CVGenerationTask" | "RedditSearchTask" | "APITask" | "WikipediaSearchTask" | "GoogleSearchTask" | "ExaSearchTask" | "ArxivSearchTask" | "BasicAgentTask" | "PromptAgentTask" | "CheckTask" | "CodeGenerationLLMTask" | "CodeExecutionLLMTask" | "Workflow" | "EmbeddingTask" | "GenerateImageTask" | "TextToSpeechTask" | "WebScrapeBeautifulSoupTask";
 
-export interface PIKATask {
+export interface PIKATask extends BaseDataseObject {
+  _id?: string;
   task_name: string;
   task_description: string;
   task_type: TaskType;
@@ -30,11 +32,6 @@ export interface PIKATask {
   agent?: PIKAAgent | null;
   human_input?: boolean;
   api_engine?: APIEngine | null;
-  created_by?: string;
-  updated_by?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  _id?: string;
 }
 
 export const convertToPIKATask = (data: any): PIKATask => {

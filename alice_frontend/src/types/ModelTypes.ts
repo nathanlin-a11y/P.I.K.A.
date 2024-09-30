@@ -1,4 +1,4 @@
-import { User, convertToUser } from "./UserTypes";
+import { BaseDataseObject, User, convertToUser } from "./UserTypes";
 import { ApiName } from "./ApiTypes";
 import { HandleClickProps } from "./CollectionTypes";
 
@@ -11,7 +11,7 @@ export enum ModelType {
     EMBEDDINGS = 'embeddings',
     IMG_GEN = 'img_gen',
 }
-export interface PIKAModel {
+export interface PIKAModel extends BaseDataseObject {
     _id?: string;
     short_name: string;
     model_name: string;
@@ -22,10 +22,6 @@ export interface PIKAModel {
     temperature?: number;
     seed?: number | null;
     use_cache?: boolean;
-    created_by?: User;
-    updated_by?: User;
-    createdAt?: Date;
-    updatedAt?: Date;
 }
 
 export const convertToPIKAModel = (data: any): PIKAModel => {
