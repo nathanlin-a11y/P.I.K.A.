@@ -1,4 +1,4 @@
-import { BaseDataseObject, User } from './UserTypes';
+import { BaseDataseObject } from './UserTypes';
 import { PIKATask, convertToPIKATask } from './TaskTypes';
 import { PIKAAgent, convertToPIKAAgent } from './AgentTypes';
 import { HandleClickProps } from './CollectionTypes';
