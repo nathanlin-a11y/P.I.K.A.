@@ -5,7 +5,7 @@ from workflow_logic.core.agent.agent import PIKAAgent
 from workflow_logic.core.tasks.task import PIKATask
 from workflow_logic.core.data_structures import References, MessageDict, TaskResponse, ApiType
 from workflow_logic.util import LOGGER
-from workflow_logic.core.parameters import FunctionParameters, ParameterDefinition, FunctionConfig
+from workflow_logic.core.data_structures import FunctionParameters, ParameterDefinition, FunctionConfig
 
 class BasicAgentTask(PIKATask):
     """

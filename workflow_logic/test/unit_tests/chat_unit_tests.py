@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock, AsyncMock
-from workflow_logic.core import PIKAChat, Prompt, PIKAModel, APIManager, PIKAAgent, PIKATask
-from workflow_logic.core.parameters import ToolFunction, FunctionConfig, FunctionParameters, ParameterDefinition
+from workflow_logic.core import PIKAChat, Prompt, APIManager, PIKAAgent, PIKATask
+from workflow_logic.core.data_structures import ToolFunction, FunctionConfig, FunctionParameters, ParameterDefinition
 
 @pytest.fixture
 def mock_api_manager():
