@@ -15,11 +15,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   chatPIKAMessages: {
     flexGrow: 1,
     overflowY: 'auto',
-    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(1),
   },
   chatPIKAInput: {
     borderTop: `1px solid ${theme.palette.divider}`,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
   },
   actionButtonContainer: {
     display: 'flex',

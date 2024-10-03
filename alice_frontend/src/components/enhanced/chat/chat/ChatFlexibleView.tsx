@@ -1,12 +1,12 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import {
     TextField,
     Box,
 } from '@mui/material';
 import { ChatComponentProps, PIKAChat, getDefaultChatForm } from '../../../../types/ChatTypes';
 import EnhancedSelect from '../../common/enhanced_select/EnhancedSelect';
-import EnhancedAgent from '../../agent/agent/EnhancedAgent';
-import EnhancedTask from '../../task/task/EnhancedTask';
+import AgentShortListView from '../../agent/agent/AgentShortListView';
+import TaskShortListView from '../../task/task/TaskShortListView';
 import { PIKAAgent } from '../../../../types/AgentTypes';
 import { PIKATask } from '../../../../types/TaskTypes';
 import { useApi } from '../../../../contexts/ApiContext';
@@ -66,6 +66,37 @@ const ChatFlexibleView: React.FC<ChatComponentProps> = ({
     const title = mode === 'create' ? 'Create New Chat' : mode === 'edit' ? 'Edit Chat' : 'Chat Details';
     const saveButtonText = form._id ? 'Update Chat' : 'Create Chat';
 
+    const memoizedAgentSelect = useMemo(() => (
+        <EnhancedSelect<PIKAAgent>
+            componentType="agents"
+            EnhancedView={AgentShortListView}
+            selectedItems={form.pika_agent ? [form.pika_agent] : []}
+            onSelect={handleAgentChange}
+            isInteractable={isEditMode}
+            label="Select Agent"
+            activeAccordion={activeAccordion}
+            onAccordionToggle={handleAccordionToggle}
+            accordionEntityName="agent"
+            showCreateButton={true}
+        />
+    ), [form.pika_agent, handleAgentChange, isEditMode, activeAccordion, handleAccordionToggle]);
+    
+      const memoizedTaskSelect = useMemo(() => (
+        <EnhancedSelect<PIKATask>
+            componentType="tasks"
+            EnhancedView={TaskShortListView}
+            selectedItems={form.functions || []}
+            onSelect={handleFunctionsChange}
+            isInteractable={isEditMode}
+            multiple
+            label="Select Functions"
+            activeAccordion={activeAccordion}
+            onAccordionToggle={handleAccordionToggle}
+            accordionEntityName="functions"
+            showCreateButton={true}
+        />
+    ), [form.functions, handleFunctionsChange, isEditMode, activeAccordion, handleAccordionToggle]);
+
     return (
         <GenericFlexibleView
             elementType='Chat'
@@ -82,31 +113,8 @@ const ChatFlexibleView: React.FC<ChatComponentProps> = ({
                 onChange={handleInputChange}
                 disabled={!isEditMode}
             />
-            <EnhancedSelect<PIKAAgent>
-                componentType="agents"
-                EnhancedComponent={EnhancedAgent}
-                selectedItems={form.pika_agent ? [form.pika_agent] : []}
-                onSelect={handleAgentChange}
-                isInteractable={isEditMode}
-                label="Select Agent"
-                activeAccordion={activeAccordion}
-                onAccordionToggle={handleAccordionToggle}
-                accordionEntityName="agent"
-                showCreateButton={true}
-            />
-            <EnhancedSelect<PIKATask>
-                componentType="tasks"
-                EnhancedComponent={EnhancedTask}
-                selectedItems={form.functions || []}
-                onSelect={handleFunctionsChange}
-                isInteractable={isEditMode}
-                multiple
-                label="Select Functions"
-                activeAccordion={activeAccordion}
-                onAccordionToggle={handleAccordionToggle}
-                accordionEntityName="functions"
-                showCreateButton={true}
-            />
+            {memoizedAgentSelect}
+            {memoizedTaskSelect}
             <Box mt={2}>
                 <MessageListView
                     items={form.messages || []}

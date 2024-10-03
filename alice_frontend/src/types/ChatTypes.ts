@@ -40,7 +40,6 @@ export interface ChatComponentProps extends HandleClickProps {
     isInteractable?: boolean;
     onInteraction?: (chat: PIKAChat) => void;
     onView?: (chat: PIKAChat) => void;
-    showRegenerate?: boolean;
     showHeaders?: boolean;
 }
 

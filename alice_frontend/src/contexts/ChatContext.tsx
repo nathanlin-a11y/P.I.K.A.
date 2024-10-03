@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { TaskResponse } from '../types/TaskResponseTypes';
-import { PIKAAgent } from '../types/AgentTypes';
 import { PIKATask } from '../types/TaskTypes';
 import { PIKAChat } from '../types/ChatTypes';
 import { MessageType } from '../types/MessageTypes';
@@ -15,8 +13,6 @@ interface ChatContextType {
     setPastChats: React.Dispatch<React.SetStateAction<PIKAChat[]>>;
     currentChatId: string | null;
     setCurrentChatId: React.Dispatch<React.SetStateAction<string | null>>;
-    agents: PIKAAgent[];
-    setAgents: React.Dispatch<React.SetStateAction<PIKAAgent[]>>;
     isGenerating: boolean;
     setIsGenerating: React.Dispatch<React.SetStateAction<boolean>>;
     handleSelectChat: (chatId: string) => Promise<void>;
@@ -27,8 +23,6 @@ interface ChatContextType {
     currentChat: PIKAChat | null;
     addTaskToChat: (taskId: string) => Promise<void>;
     isTaskInChat: (taskId: string) => boolean;
-    fetchAvailableTasks: () => Promise<PIKATask[]>;
-    fetchAvailableTaskResults: () => Promise<TaskResponse[]>;
 }
 
 const ChatContext = createContext<ChatContextType | null>(null);
@@ -42,7 +36,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     const [messages, setMessages] = useState<MessageType[]>([]);
     const [pastChats, setPastChats] = useState<PIKAChat[]>([]);
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
-    const [agents, setAgents] = useState<PIKAAgent[]>([]);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     const [currentChat, setCurrentChat] = useState<PIKAChat | null>(null);
     const { user } = useAuth();
@@ -62,7 +55,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         }
     }, [user, fetchChats]);
 
-    const fetchChatById = async (chatId: string): Promise<PIKAChat> => {
+    const fetchChatById = useCallback(async (chatId: string): Promise<PIKAChat> => {
         try {
             const chatData = await fetchItem('chats', chatId) as PIKAChat;
             return chatData;
@@ -70,7 +63,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             Logger.error('Error fetching chat by id:', error);
             throw error;
         }
-    };
+    }, [fetchItem]);
 
     const fetchCurrentChat = async () => {
         if (!currentChatId) return;
@@ -78,7 +71,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             const chatData = await fetchChatById(currentChatId)
             setCurrentChat(chatData);
             setMessages(chatData.messages);
-            setAgents([chatData.pika_agent]);
         } catch (error) {
             Logger.error('Error fetching current chat:', error);
         }
@@ -90,7 +82,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             setCurrentChat(chatData);
             setMessages(chatData.messages);
             setCurrentChatId(chatId);
-            setAgents([chatData.pika_agent]);
         } catch (error) {
             Logger.error('Error fetching chat:', error);
         }
@@ -98,8 +89,9 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
 
     const handleSendMessage = async (currentChatId: string, message: MessageType) => {
         try {
-            await sendMessage(currentChatId, message);
+            Logger.info('Sending message:', message);
             setMessages(prevMessages => [...prevMessages, message]);
+            await sendMessage(currentChatId, message);
             await generateResponse();
         } catch (error) {
             Logger.error('Error sending message or generating response:', error);
@@ -155,26 +147,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         }
     };
 
-    const fetchAvailableTasks = async (): Promise<PIKATask[]> => {
-        try {
-            const tasks = await fetchItem("tasks") as PIKATask | PIKATask[];
-            return Array.isArray(tasks) ? tasks : [tasks];
-        } catch (error) {
-            Logger.error('Error fetching available tasks:', error);
-            return [];
-        }
-    };
-
-    const fetchAvailableTaskResults = async (): Promise<TaskResponse[]> => {
-        try {
-            const taskResults = await fetchItem("taskresults") as TaskResponse[];
-            return Array.isArray(taskResults) ? taskResults : [taskResults];
-        } catch (error) {
-            Logger.error('Error fetching available task results:', error);
-            return [];
-        }
-    };
-
     const value: ChatContextType = {
         messages,
         setMessages,
@@ -182,8 +154,6 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         setPastChats,
         currentChatId,
         setCurrentChatId,
-        agents,
-        setAgents,
         isGenerating,
         setIsGenerating,
         handleSelectChat,
@@ -193,9 +163,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         fetchChats,
         currentChat,
         addTaskToChat,
-        isTaskInChat,
-        fetchAvailableTasks,
-        fetchAvailableTaskResults,
+        isTaskInChat
     };
 
     return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
