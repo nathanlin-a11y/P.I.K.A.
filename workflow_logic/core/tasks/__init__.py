@@ -1,4 +1,5 @@
-from .agent_tasks import BasicAgentTask, PromptAgentTask, CheckTask, CodeExecutionLLMTask, CodeGenerationLLMTask
+from .agent_tasks import BasicAgentTask
+from .prompt_agent_tasks import PromptAgentTask, CheckTask, CodeExecutionLLMTask, CodeGenerationLLMTask
 from .api_tasks import APITask
 from .task import PIKATask
 from .workflow import Workflow

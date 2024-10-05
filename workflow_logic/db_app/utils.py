@@ -1,4 +1,4 @@
-from workflow_logic.core.tasks import APITask, PIKATask, Workflow, BasicAgentTask, PromptAgentTask, CheckTask, CodeGenerationLLMTask, CodeExecutionLLMTask, WebScrapeBeautifulSoupTask, EmbeddingTask, GenerateImageTask, TextToSpeechTask
+from workflow_logic.core.tasks import APITask, PIKATask, Workflow, PromptAgentTask, CheckTask, CodeGenerationLLMTask, CodeExecutionLLMTask, WebScrapeBeautifulSoupTask, EmbeddingTask, GenerateImageTask, TextToSpeechTask
 
 available_task_types: list[PIKATask] = [
     Workflow,
@@ -6,7 +6,6 @@ available_task_types: list[PIKATask] = [
     CodeGenerationLLMTask,
     CodeExecutionLLMTask,
     CheckTask,
-    BasicAgentTask,
     APITask,
     EmbeddingTask,
     GenerateImageTask,
