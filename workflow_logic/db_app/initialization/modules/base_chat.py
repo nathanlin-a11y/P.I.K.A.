@@ -29,8 +29,8 @@ base_chat_module = BaseChatModule(
                     "chat": "GPT4o",
                 },
                 "max_consecutive_auto_reply": 1,
-                "has_functions": False,
-                "has_code_exec": True,
+                "has_functions": True,
+                "has_code_exec": False,
             },
             {
                 "key": "claude_pika",
@@ -41,7 +41,7 @@ base_chat_module = BaseChatModule(
                 },
                 "max_consecutive_auto_reply": 1,
                 "has_functions": True,
-                "has_code_exec": True,
+                "has_code_exec": False,
             },
             {
                 "key": "lm_studio_pika",
@@ -52,8 +52,52 @@ base_chat_module = BaseChatModule(
                 },
                 "max_consecutive_auto_reply": 1,
                 "has_functions": True,
-                "has_code_exec": True,
-            }
+                "has_code_exec": False,
+            },
+            {
+                "key": "gemini_pika",
+                "name": "PIKA (Gemini)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "gemini_1.5_flash",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,
+            },
+            {
+                "key": "mistral_pika",
+                "name": "PIKA (Mistral)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "mistral_small",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,
+            },
+            {
+                "key": "cohere_pika",
+                "name": "PIKA (Cohere)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "command-r-plus",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,                
+            },
+            {
+                "key": "meta_pika",
+                "name": "PIKA (Meta)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "llama3.2_90b",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,
+            },
         ],
         "chats": [
             {
@@ -76,7 +120,35 @@ base_chat_module = BaseChatModule(
                 "messages": [],
                 "pika_agent": "lm_studio_pika",
                 "functions": [],
-            }
+            },
+            {
+                "key": "gemini_chat",
+                "name": "Gemini Chat",
+                "messages": [],
+                "pika_agent": "gemini_pika",
+                "functions": [],
+            },
+            {
+                "key": "mistral_chat",
+                "name": "Mistral Chat",
+                "messages": [],
+                "pika_agent": "mistral_pika",
+                "functions": [],
+            },
+            {
+                "key": "cohere_chat",
+                "name": "Cohere Chat",
+                "messages": [],
+                "pika_agent": "cohere_pika",
+                "functions": [],
+            },
+            {
+                "key": "meta_chat",
+                "name": "Meta Chat",
+                "messages": [],
+                "pika_agent": "meta_pika",
+                "functions": [],
+            },
         ]
     }
 )
