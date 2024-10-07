@@ -12,7 +12,7 @@ advanced_chat_module = AdvancedChatModule(
     data={
         "agents": [
             {
-                "key": "gpt_pika_adv",
+                "key": "gemini_pika_adv",
                 "name": "PIKA w/ tools (Gemini)",
                 "system_message": "default_system_message",
                 "models": {
@@ -43,16 +43,16 @@ advanced_chat_module = AdvancedChatModule(
         "chats": [
             {
                 "key": "advanced_chat",
-                "name": "Advanced Chat (GPT)",
+                "name": "Advanced Chat (Gemini)",
                 "messages": [],
-                "pika_agent": "gpt_pika_adv", 
+                "pika_agent": "gemini_pika_adv", 
                 "functions": [ "web_scrape_workflow", "embedding_task", "tts_task", "research_workflow"], 
             },
             {
                 "key": "advanced_chat_claude",
                 "name": "Advanced Chat (Claude)",
                 "messages": [],
-                "pika_agent": "claude_pika",
+                "pika_agent": "claude_pika_adv",
                 "functions": ["coding_workflow", "image_gen_task", "embedding_task"], 
             },
         ]
