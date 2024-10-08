@@ -3,6 +3,7 @@ from pydantic import Field
 from workflow_logic.db_app.initialization.modules.init_module import InitializationModule
 
 class BaseChatModule(InitializationModule):
+    """This module defines the base chat agents and chats, as well as the default prompt for the chat agent."""
     name: str = "base_chat"
     dependencies: List[str] = ["base"]
     data: Dict[str, List[Dict[str, Any]]] = Field(default_factory=dict)
@@ -24,28 +25,89 @@ base_chat_module = BaseChatModule(
                 "key": "gpt_pika",
                 "name": "PIKA (GPT)",
                 "system_message": "default_system_message",
-                "model_id": "GPT4o",
-                "max_consecutive_auto_reply": 2,
+                "models": {
+                    "chat": "GPT4o",
+                },
+                "max_consecutive_auto_reply": 1,
                 "has_functions": True,
-                "has_code_exec": True,
+                "has_code_exec": False,
             },
             {
                 "key": "claude_pika",
                 "name": "PIKA (Claude)",
                 "system_message": "default_system_message",
-                "model_id": "Claude3.5",
-                "max_consecutive_auto_reply": 2,
+                "models": {
+                    "chat": "Claude3.5",
+                },
+                "max_consecutive_auto_reply": 1,
                 "has_functions": True,
-                "has_code_exec": True,
+                "has_code_exec": False,
             },
             {
                 "key": "lm_studio_pika",
                 "name": "PIKA (LM Studio)",
                 "system_message": "default_system_message",
-                "model_id": "Llama3_1_8B",
-                "max_consecutive_auto_reply": 2,
+                "models": {
+                    "chat": "Llama3_1_8B",
+                },
+                "max_consecutive_auto_reply": 1,
                 "has_functions": True,
-                "has_code_exec": True,
+                "has_code_exec": False,
+            },
+            {
+                "key": "gemini_pika",
+                "name": "PIKA (Gemini)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "gemini_1.5_flash",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,
+            },
+            {
+                "key": "mistral_pika",
+                "name": "PIKA (Mistral)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "mistral_small",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,
+            },
+            {
+                "key": "cohere_pika",
+                "name": "PIKA (Cohere)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "command-r-plus",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,                
+            },
+            {
+                "key": "meta_pika",
+                "name": "PIKA (Meta)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "llama3.2_90b",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,
+            },
+            {
+                "key": "groq_pika",
+                "name": "PIKA (Groq)",
+                "system_message": "default_system_message",
+                "models": {
+                    "chat": "llama-3.1-70b-versatile",
+                },
+                "max_consecutive_auto_reply": 1,
+                "has_functions": True,
+                "has_code_exec": False,
             }
         ],
         "chats": [
@@ -68,6 +130,41 @@ base_chat_module = BaseChatModule(
                 "name": "LMStudio Chat",
                 "messages": [],
                 "pika_agent": "lm_studio_pika",
+                "functions": [],
+            },
+            {
+                "key": "gemini_chat",
+                "name": "Gemini Chat",
+                "messages": [],
+                "pika_agent": "gemini_pika",
+                "functions": [],
+            },
+            {
+                "key": "mistral_chat",
+                "name": "Mistral Chat",
+                "messages": [],
+                "pika_agent": "mistral_pika",
+                "functions": [],
+            },
+            {
+                "key": "cohere_chat",
+                "name": "Cohere Chat",
+                "messages": [],
+                "pika_agent": "cohere_pika",
+                "functions": [],
+            },
+            {
+                "key": "meta_chat",
+                "name": "Meta Chat",
+                "messages": [],
+                "pika_agent": "meta_pika",
+                "functions": [],
+            },
+            {
+                "key": "groq_chat",
+                "name": "Groq Chat",
+                "messages": [],
+                "pika_agent": "groq_pika",
                 "functions": [],
             }
         ]

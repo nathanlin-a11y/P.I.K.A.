@@ -1,12 +1,16 @@
 import { Model, Types, Document } from 'mongoose';
+import { IMessageDocument } from './message.interface';
+import { ITaskDocument } from './task.interface';
+import { IAgentDocument } from './agent.interface';
+import { IUserDocument } from './user.interface';
 
 // ChangeHistory interfaces
 export interface IChangeHistory {
-    previous_agent: Types.ObjectId | null;
-    updated_agent: Types.ObjectId | null;
-    previous_functions: Types.ObjectId[];
-    updated_functions: Types.ObjectId[];
-    changed_by: Types.ObjectId;
+    previous_agent: Types.ObjectId | null | IAgentDocument;
+    updated_agent: Types.ObjectId | null | IAgentDocument;
+    previous_functions: Types.ObjectId[] | ITaskDocument[];
+    updated_functions: Types.ObjectId[] | ITaskDocument[];
+    changed_by: Types.ObjectId | IUserDocument;
     timestamp: Date;
 }
 
@@ -14,38 +18,15 @@ export interface IChangeHistoryDocument extends IChangeHistory, Document {
     apiRepresentation: () => any;
 }
 
-export interface IMessage {
-    _id?: Types.ObjectId;
-    content: string;
-    role: 'user' | 'assistant' | 'system' | 'tool';
-    generated_by: 'user' | 'llm' | 'tool';
-    step: string;
-    assistant_name?: string;
-    context?: any;
-    type: string;
-    tool_calls?: any[];
-    tool_call_id?: string,
-    request_type?: string | null;
-    task_responses?: Types.ObjectId[];
-    created_by: Types.ObjectId;
-}
-
-export interface IMessageDocument extends IMessage, Document {
-    _id: Types.ObjectId;  // This ensures _id is always present in IMessageDocument
-    createdAt: Date;
-    updatedAt: Date;
-    apiRepresentation: () => any;
-}
-
 // PIKAChat interfaces
 export interface IPIKAChat {
     name: string;
-    messages: IMessageDocument[];
+    messages: Types.ObjectId[] | IMessageDocument[];
     changeHistory: IChangeHistoryDocument[];
-    pika_agent: Types.ObjectId;
-    functions: Types.ObjectId[];
-    created_by: Types.ObjectId;
-    updated_by: Types.ObjectId;
+    pika_agent: Types.ObjectId | IAgentDocument;
+    functions: Types.ObjectId[] | ITaskDocument[];
+    created_by: Types.ObjectId | IUserDocument;
+    updated_by: Types.ObjectId | IUserDocument;
 }
 
 export interface IPIKAChatMethods {
@@ -53,6 +34,7 @@ export interface IPIKAChatMethods {
 }
 
 export interface IPIKAChatDocument extends IPIKAChat, Document, IPIKAChatMethods {
+    _id: Types.ObjectId; 
     createdAt: Date;
     updatedAt: Date;
 }

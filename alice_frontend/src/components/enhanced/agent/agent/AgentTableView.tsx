@@ -16,8 +16,8 @@ const AgentTableView: React.FC<AgentComponentProps> = ({
       sortKey: 'name'
     },
     {
-      header: 'Model',
-      render: (agent: PIKAAgent) => agent.model_id?.model_name || 'N/A',
+      header: 'Chat Model',
+      render: (agent: PIKAAgent) => agent.models?.chat?.model_name || 'N/A',
     },
     {
       header: 'Created At',

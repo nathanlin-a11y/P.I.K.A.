@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock, AsyncMock
-from workflow_logic.core import PIKAChat, Prompt, PIKAModel, APIManager, PIKAAgent, PIKATask
-from workflow_logic.core.parameters import ToolFunction, FunctionConfig, FunctionParameters, ParameterDefinition
+from workflow_logic.core import PIKAChat, Prompt, APIManager, PIKAAgent, PIKATask
+from workflow_logic.core.data_structures import ToolFunction, FunctionConfig, FunctionParameters, ParameterDefinition
 
 @pytest.fixture
 def mock_api_manager():
@@ -16,7 +16,6 @@ def sample_chat():
             system_message=Prompt(name="test", content="You are a test assistant"),
             has_functions=True,
             has_code_exec=True,
-            model_id=PIKAModel(short_name="TestModel", model_name="test-model", model_format="OpenChat", ctx_size=1000, model_type="chat", deployment="test"),
         ),
     )
 

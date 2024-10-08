@@ -2,9 +2,9 @@ import traceback
 from bson import ObjectId
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional, Dict, Callable, Any
-from workflow_logic.util import MessageDict, LOGGER
+from workflow_logic.util import LOGGER
+from workflow_logic.core.data_structures import MessageDict, ToolFunction
 from workflow_logic.core.agent import PIKAAgent
-from workflow_logic.core.parameters import ToolFunction
 from workflow_logic.core.prompt import Prompt
 from workflow_logic.core.api import APIManager
 from workflow_logic.core.tasks import PIKATask
@@ -80,8 +80,14 @@ class PIKAChat(BaseModel):
             if not self.messages: self.messages = []
             if new_message: self.messages.append(MessageDict(role="user", content=new_message, generated_by="user", type="text"))
             
-            new_messages = await self.pika_agent.generate_response(api_manager=api_manager, messages=self.messages, tool_map=self.tool_map(api_manager), tools_list=self.tool_list(api_manager))
-            LOGGER.info(f"New messages generated: {new_messages}")
+            new_messages, start_messages = await self.pika_agent.chat(
+                api_manager=api_manager, 
+                messages=self.messages, 
+                tool_map=self.tool_map(api_manager), 
+                tools_list=self.tool_list(api_manager), 
+                max_turns=self.pika_agent.max_consecutive_auto_reply,
+                )
+            LOGGER.debug(f"New messages generated: {new_messages}")
             self.messages.extend(new_messages)
             return new_messages
         except Exception as e:
@@ -100,7 +106,7 @@ class PIKAChat(BaseModel):
         
         # Check LLM API
         try:
-            data = api_manager.retrieve_api_data("llm_api", self.pika_agent.model_id)
+            data = api_manager.retrieve_api_data("llm_api", self.pika_agent.llm_model)
             if not data:
                 result["status"] = "warning"
                 result["llm_api"] = "not_found"

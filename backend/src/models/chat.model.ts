@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
-import { IChangeHistoryDocument, IMessageDocument, IPIKAChatDocument, IPIKAChatModel } from '../interfaces/chat.interface';
+import { IChangeHistoryDocument, IPIKAChatDocument, IPIKAChatModel } from '../interfaces/chat.interface';
 import { ensureObjectIdHelper } from '../utils/utils';
 
 // ChangeHistory schema
@@ -24,46 +24,10 @@ changeHistorySchema.methods.apiRepresentation = function (this: IChangeHistoryDo
   };
 };
 
-// Message schema
-const messageSchema = new Schema<IMessageDocument>({
-  content: { type: String, required: true, description: "Content of the message" },
-  role: { type: String, enum: ["user", "assistant", "system", "tool"], default: "user", description: "Role of the message" },
-  generated_by: { type: String, enum: ["user", "llm", "tool"], default: "user", description: "Source that generated the message" },
-  step: { type: String, default: "", description: "Process that is creating this message, usually the task_name or tool_name" },
-  assistant_name: { type: String, default: "", description: "Name of the assistant" },
-  context: { type: Schema.Types.Mixed, default: null, description: "Context of the message" },
-  type: { type: String, default: "text", description: "Type of the message" },
-  tool_calls: { type: Schema.Types.Mixed, default: [], description: "List of tool calls in the message" },
-  tool_call_id: { type: String, default: null, description: "ID of the tool call, if any" },
-  request_type: { type: String, default: null, description: "Request type of the message, if any. Can be 'approval', 'confirmation', etc." },
-  created_by: { type: Schema.Types.ObjectId, ref: 'User', description: "User ID used to call the endpoint" },
-  task_responses: [{ type: Schema.Types.ObjectId, ref: 'TaskResult' }],
-}, { timestamps: true });
-
-messageSchema.methods.apiRepresentation = function (this: IMessageDocument) {
-  return {
-    id: this._id,
-    content: this.content || null,
-    role: this.role || "user",
-    generated_by: this.generated_by || "user",
-    step: this.step || "",
-    assistant_name: this.assistant_name || "",
-    context: this.context || null,
-    tool_calls: this.tool_calls || [],
-    type: this.type || "text",
-    tool_call_id: this.tool_call_id || null,
-    request_type: this.request_type || null,
-    created_by: this.created_by ? (this.created_by._id || this.created_by) : null,
-    created_at: this.createdAt || null,
-    updated_at: this.updatedAt || null,
-    task_responses: this.task_responses || []
-  };
-};
-
 // PIKAChat schema
 const pikaChatSchema = new Schema<IPIKAChatDocument, IPIKAChatModel>({
   name: { type: String, default: "New Chat", description: "Name of the chat" },
-  messages: [{ type: messageSchema, required: true, default: [], description: "List of messages in the chat conversation" }],
+  messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }], 
   changeHistory: [{ type: changeHistorySchema, default: [], description: "List of changes in the chat conversation" }],
   pika_agent: { type: Schema.Types.ObjectId, ref: 'Agent', required: true, description: "The PIKA agent object" },
   functions: [{ type: Schema.Types.ObjectId, ref: 'Task', default: [], description: "List of functions to be registered with the agent" }],
@@ -74,66 +38,54 @@ const pikaChatSchema = new Schema<IPIKAChatDocument, IPIKAChatModel>({
 pikaChatSchema.methods.apiRepresentation = function (this: IPIKAChatDocument) {
   return {
     id: this._id,
-    messages: this.messages.map(message => message.apiRepresentation()),
-    changeHistory: this.changeHistory.map(change => change.apiRepresentation()),
+    messages: this.messages.map((message) => message._id || message),
+    changeHistory: this.changeHistory.map((change) => change.apiRepresentation()),
     pika_agent: this.pika_agent ? (this.pika_agent._id || this.pika_agent) : null,
-    functions: this.functions.map(func => func._id || func),
+    functions: this.functions.map((func) => func._id || func),
     created_by: this.created_by ? (this.created_by._id || this.created_by) : null,
     updated_by: this.updated_by ? (this.updated_by._id || this.updated_by) : null,
-    created_at: this.createdAt || null,
-    updated_at: this.updatedAt || null
+    createdAt: this.createdAt || null,
+    updatedAt: this.updatedAt || null,
   };
 };
 
-function ensureObjectIdForSave(this: IPIKAChatDocument, next: mongoose.CallbackWithoutResultAndOptionalError) {
+function ensureObjectIdForSave(
+  this: IPIKAChatDocument,
+  next: mongoose.CallbackWithoutResultAndOptionalError
+) {
   if (this.pika_agent) this.pika_agent = ensureObjectIdHelper(this.pika_agent);
   if (this.created_by) this.created_by = ensureObjectIdHelper(this.created_by);
   if (this.updated_by) this.updated_by = ensureObjectIdHelper(this.updated_by);
-
   if (this.functions) {
-    this.functions = this.functions.map(func => ensureObjectIdHelper(func));
+    this.functions = this.functions.map((func) => ensureObjectIdHelper(func));
   }
-
-  this.messages.forEach(message => {
-    if (message.task_responses) {
-      message.task_responses = message.task_responses.map(response => ensureObjectIdHelper(response));
-    }
-  });
-
+  if (this.messages) {
+    this.messages = this.messages.map((message) => ensureObjectIdHelper(message));
+  }
   next();
 }
 
-function ensureObjectIdForUpdate(this: mongoose.Query<any, any>, next: mongoose.CallbackWithoutResultAndOptionalError) {
+function ensureObjectIdForUpdate(
+  this: mongoose.Query<any, any>,
+  next: mongoose.CallbackWithoutResultAndOptionalError
+) {
   const update = this.getUpdate() as any;
-  update.pika_agent = ensureObjectIdHelper(update.pika_agent);
-  update.created_by = ensureObjectIdHelper(update.created_by);
-  update.updated_by = ensureObjectIdHelper(update.updated_by);
-
+  if (update.pika_agent) update.pika_agent = ensureObjectIdHelper(update.pika_agent);
+  if (update.created_by) update.created_by = ensureObjectIdHelper(update.created_by);
+  if (update.updated_by) update.updated_by = ensureObjectIdHelper(update.updated_by);
   if (update.functions) {
     update.functions = update.functions.map((func: any) => ensureObjectIdHelper(func));
   }
-
   if (update.messages) {
-    update.messages.forEach((message: any) => {
-      if (message.task_responses) {
-        message.task_responses = message.task_responses.map((response: any) => ensureObjectIdHelper(response));
-      }
-    });
+    update.messages = update.messages.map((message: any) => ensureObjectIdHelper(message));
   }
-
   next();
 }
 
 function autoPopulate(this: mongoose.Query<any, any>) {
   this.populate('pika_agent created_by updated_by')
-    .populate({
-      path: 'functions',
-      model: 'Task'
-    })
-    .populate({
-      path: 'messages.task_responses',
-      model: 'TaskResult'
-    });
+    .populate('functions')
+    .populate('messages'); // Only need to populate messages at the top level
 }
 
 pikaChatSchema.pre('save', ensureObjectIdForSave);
