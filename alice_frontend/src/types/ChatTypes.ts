@@ -1,7 +1,7 @@
 import { BaseDataseObject } from './UserTypes';
 import { PIKATask, convertToPIKATask } from './TaskTypes';
 import { PIKAAgent, convertToPIKAAgent } from './AgentTypes';
-import { HandleClickProps } from './CollectionTypes';
+import { EnhancedComponentProps } from './CollectionTypes';
 import { convertToMessageType, MessageType } from './MessageTypes';
 
 export interface PIKAChat extends BaseDataseObject {
@@ -31,16 +31,8 @@ export interface MessageProps {
     chatId?: string,
 }
 
-export interface ChatComponentProps extends HandleClickProps {
-    items: PIKAChat[] | null;
-    item: PIKAChat | null;
-    onChange: (newItem: Partial<PIKAChat>) => void;
-    mode: 'create' | 'view' | 'edit';
-    handleSave: () => Promise<void>;
-    isInteractable?: boolean;
-    onInteraction?: (chat: PIKAChat) => void;
-    onView?: (chat: PIKAChat) => void;
-    showHeaders?: boolean;
+export interface ChatComponentProps extends EnhancedComponentProps<PIKAChat> {
+    
 }
 
 export const getDefaultChatForm = (): Partial<PIKAChat> => ({

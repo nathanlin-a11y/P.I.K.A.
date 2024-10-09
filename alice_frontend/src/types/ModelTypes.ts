@@ -1,6 +1,6 @@
 import { BaseDataseObject, convertToUser } from "./UserTypes";
 import { ApiName } from "./ApiTypes";
-import { HandleClickProps } from "./CollectionTypes";
+import { EnhancedComponentProps } from "./CollectionTypes";
 
 export enum ModelType {
     INSTRUCT = 'instruct',
@@ -43,16 +43,8 @@ export const convertToPIKAModel = (data: any): PIKAModel => {
     };
 };
 
-export interface ModelComponentProps extends HandleClickProps {
-  items: PIKAModel[] | null;
-  item: PIKAModel | null;
-  onChange: (newItem: Partial<PIKAModel>) => void;
-  mode: 'create' | 'view' | 'edit';
-  handleSave: () => Promise<void>;
-  isInteractable?: boolean;
-  onView?: (model: PIKAModel) => void;
-  onInteraction?: (model: PIKAModel) => void;
-  showHeaders?: boolean;
+export interface ModelComponentProps extends EnhancedComponentProps<PIKAModel> {
+    
 }
 
 export const getDefaultModelForm = (): Partial<PIKAModel> => ({
@@ -60,8 +52,8 @@ export const getDefaultModelForm = (): Partial<PIKAModel> => ({
     model_name: '',
     model_format: '',
     ctx_size: 0,
-    model_type: ModelType.CHAT,
-    api_name: ApiName.OPENAI,
+    model_type: undefined,
+    api_name: undefined,
     temperature: 0.7,
     use_cache: true
 });

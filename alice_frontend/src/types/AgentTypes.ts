@@ -1,7 +1,7 @@
 import { BaseDataseObject } from "./UserTypes";
 import { PIKAModel, ModelType } from "./ModelTypes";
 import { Prompt } from "./PromptTypes";
-import { HandleClickProps } from "./CollectionTypes";
+import { EnhancedComponentProps } from "./CollectionTypes";
 
 export interface PIKAAgent extends BaseDataseObject {
   _id?: string;
@@ -29,16 +29,7 @@ export const convertToPIKAAgent = (data: any): PIKAAgent => {
   };
 };
 
-export interface AgentComponentProps extends HandleClickProps {
-  items: PIKAAgent[] | null;
-  item: PIKAAgent | null;
-  onChange: (newItem: Partial<PIKAAgent>) => void;
-  mode: 'create' | 'view' | 'edit';
-  handleSave: () => Promise<void>;
-  isInteractable?: boolean;
-  onInteraction?: (agent: PIKAAgent) => void;
-  onView?: (agent: PIKAAgent) => void;
-  showHeaders?: boolean;
+export interface AgentComponentProps extends EnhancedComponentProps<PIKAAgent> {
 }
 
 export const getDefaultAgentForm = (): Partial<PIKAAgent> => ({

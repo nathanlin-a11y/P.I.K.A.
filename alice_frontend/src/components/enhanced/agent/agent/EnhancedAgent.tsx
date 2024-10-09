@@ -17,6 +17,7 @@ interface EnhancedAgentProps extends Omit<AgentComponentProps, 'items' | 'item' 
   itemId?: string;
   fetchAll: boolean;
   onSave?: (savedItem: PIKAAgent) => void;
+  onDelete?: (deletedItem: PIKAAgent) => Promise<void>;
 }
 
 const EnhancedAgent: React.FC<EnhancedAgentProps> = (props) => {
@@ -25,7 +26,8 @@ const EnhancedAgent: React.FC<EnhancedAgentProps> = (props) => {
     item: PIKAAgent | null,
     onChange: (newItem: Partial<PIKAAgent>) => void,
     mode: BaseAgentMode,
-    handleSave: () => Promise<void>
+    handleSave: () => Promise<void>,
+    onDelete: (deletedItem: PIKAAgent) => Promise<void>,
   ) => {
     const commonProps: AgentComponentProps = {
       items,
@@ -33,6 +35,7 @@ const EnhancedAgent: React.FC<EnhancedAgentProps> = (props) => {
       onChange,
       mode,
       handleSave,
+      handleDelete: onDelete,
       isInteractable: props.isInteractable,
       onInteraction: props.onInteraction,
       showHeaders: props.showHeaders,
@@ -69,6 +72,7 @@ const EnhancedAgent: React.FC<EnhancedAgentProps> = (props) => {
       isInteractable={props.isInteractable}
       onInteraction={props.onInteraction}
       onSave={props.onSave}
+      onDelete={props.onDelete}
       fetchAll={props.fetchAll}
       render={renderContent}
     />

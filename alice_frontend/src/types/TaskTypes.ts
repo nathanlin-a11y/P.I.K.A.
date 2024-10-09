@@ -3,12 +3,23 @@ import { Prompt } from "./PromptTypes";
 import { FunctionParameters } from "./ParameterTypes";
 import { PIKAModel } from './ModelTypes';
 import { ApiType } from './ApiTypes';
-import { HandleClickProps } from "./CollectionTypes";
+import { EnhancedComponentProps } from "./CollectionTypes";
 import { API, APIEngine } from './ApiTypes';
 import { BaseDataseObject } from "./UserTypes";
+import Logger from "../utils/Logger";
 
-export type TaskType = "CVGenerationTask" | "APITask" | "PromptAgentTask" | "CheckTask" | "CodeGenerationLLMTask" | "CodeExecutionLLMTask" | "Workflow" | "EmbeddingTask" | "GenerateImageTask" | "TextToSpeechTask" | "WebScrapeBeautifulSoupTask";
-
+export enum TaskType {
+  APITask = "APITask",
+  PromptAgentTask = "PromptAgentTask",
+  CheckTask = "CheckTask",
+  CodeGenerationLLMTask = "CodeGenerationLLMTask",
+  CodeExecutionLLMTask = "CodeExecutionLLMTask",
+  Workflow = "Workflow",
+  EmbeddingTask = "EmbeddingTask",
+  GenerateImageTask = "GenerateImageTask",
+  TextToSpeechTask = "TextToSpeechTask",
+  WebScrapeBeautifulSoupTask = "WebScrapeBeautifulSoupTask"
+}
 export type RouteMapTuple = [string | null, boolean];
 export type RouteMap = { [key: number]: RouteMapTuple };
 export type TasksEndCodeRouting = { [key: string]: RouteMap };
@@ -73,17 +84,8 @@ export const convertToPIKATask = (data: any): PIKATask => {
 
 export const DefaultPIKATask: PIKATask = convertToPIKATask({});
 
-export interface TaskComponentProps extends HandleClickProps {
-  items: PIKATask[] | null;
-  item: PIKATask | null;
-  mode: 'create' | 'view' | 'edit';
-  onChange: (newItem: Partial<PIKATask>) => void;
-  handleSave: () => Promise<void>;
-  onInteraction?: (task: PIKATask) => void;
-  onView?: (task: PIKATask) => void;
+export interface TaskComponentProps extends EnhancedComponentProps<PIKATask> {
   onExecute?: () => Promise<any>;
-  isInteractable?: boolean;
-  showHeaders?: boolean;
 }
 
 export interface TaskFormsProps extends TaskComponentProps {
@@ -116,6 +118,7 @@ export const getDefaultTaskForm = (taskType: TaskType): PIKATask => {
     max_attempts: 3
   };
 
+  Logger.debug('getDefaultTaskForm', taskType);
   switch (taskType) {
     case 'CheckTask':
       return { ...baseForm, exit_code_response_map: {} };

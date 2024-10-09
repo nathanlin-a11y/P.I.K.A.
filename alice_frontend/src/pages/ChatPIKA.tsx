@@ -56,10 +56,9 @@ const ChatPIKA: React.FC = () => {
 
   const actions = [
     {
-      name: `Create ${activeTab}`,
+      name: `Create chat`,
       icon: Add,
       action: handleCreateNew,
-      disabled: activeTab === 'Task Results'
     }
   ];
 
