@@ -9,7 +9,7 @@ const ChatShortListView: React.FC<ChatComponentProps> = ({
     onView,
 }) => {
     const getPrimaryText = (chat: PIKAChat) => chat.name;
-    const getSecondaryText = (chat: PIKAChat) => chat.pika_agent?.name || 'N/A';
+    const getSecondaryText = (chat: PIKAChat) => `${chat.pika_agent?.name || 'N/A'} - Msg: ${chat.messages.length || 0}`;
 
     return (
         <EnhancedShortListView<PIKAChat>

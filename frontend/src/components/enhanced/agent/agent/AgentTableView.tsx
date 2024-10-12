@@ -20,9 +20,14 @@ const AgentTableView: React.FC<AgentComponentProps> = ({
       render: (agent: PIKAAgent) => agent.models?.chat?.model_name || 'N/A',
     },
     {
-      header: 'Created At',
-      render: (agent: PIKAAgent) => new Date(agent.createdAt || '').toLocaleString(),
-      sortKey: 'createdAt'
+      header: 'Tool',
+      render: (agent: PIKAAgent) => agent.has_functions ? 'Yes' : 'No',
+      sortKey: 'has_functions'
+    },
+    {
+      header: 'Code',
+      render: (agent: PIKAAgent) => agent.has_code_exec ? 'Yes' : 'No',
+      sortKey: 'has_code_exec'
     }
   ];
 

@@ -21,9 +21,9 @@ const ModelTableView: React.FC<ModelComponentProps> = ({
       sortKey: 'api_name'
     },
     {
-      header: 'Created At',
-      render: (model: PIKAModel) => new Date(model.createdAt || '').toLocaleString(),
-      sortKey: 'createdAt'
+      header: 'Model Type',
+      render: (model: PIKAModel) => model.model_type || 'N/A',
+      sortKey: 'model_type'
     }
   ];
 
