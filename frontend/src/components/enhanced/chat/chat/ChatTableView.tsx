@@ -22,9 +22,9 @@ const ChatTableView: React.FC<ChatComponentProps> = ({
       // We can't directly sort by nested properties, so we'll omit sortKey here
     },
     {
-      header: 'Created At',
-      render: (chat: PIKAChat) => new Date(chat.createdAt || '').toLocaleString(),
-      sortKey: 'createdAt'
+      header: 'Msg Count',
+      render: (chat: PIKAChat) => chat.messages.length || 0,
+      sortKey: 'messages.length'
     }
   ];
 
