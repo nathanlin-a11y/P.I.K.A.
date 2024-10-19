@@ -88,7 +88,7 @@ base_chat_module = BaseChatModule(
                 "has_code_exec": False,                
             },
             {
-                "key": "meta_pika",
+                "key": "llama_pika",
                 "name": "PIKA (Meta)",
                 "system_message": "default_system_message",
                 "models": {
@@ -154,10 +154,10 @@ base_chat_module = BaseChatModule(
                 "functions": [],
             },
             {
-                "key": "meta_chat",
-                "name": "Meta Chat",
+                "key": "llama_chat",
+                "name": "Llama Chat",
                 "messages": [],
-                "pika_agent": "meta_pika",
+                "pika_agent": "llama_pika",
                 "functions": [],
             },
             {
