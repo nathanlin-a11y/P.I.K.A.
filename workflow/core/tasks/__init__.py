@@ -2,7 +2,6 @@ from .agent_tasks import BasicAgentTask
 from .prompt_agent_tasks import PromptAgentTask, CheckTask, CodeExecutionLLMTask, CodeGenerationLLMTask
 from .api_tasks import APITask
 from .task import PIKATask
-from .node_based_task import NodeBasedTask
 from .workflow import Workflow
 from .embedding_tasks import EmbeddingTask
 from .img_gen_tasks import GenerateImageTask
@@ -20,5 +19,5 @@ available_task_types: list[PIKATask] = [
     TextToSpeechTask,
     WebScrapeBeautifulSoupTask
 ]
-__all__ = ['PIKATask', 'Workflow', 'BasicAgentTask', 'PromptAgentTask', 'APITask', 'APISearchTask', 'GenerateImageTask', 'NodeBasedTask',
+__all__ = ['PIKATask', 'Workflow', 'BasicAgentTask', 'PromptAgentTask', 'APITask', 'APISearchTask', 'GenerateImageTask', 
            'CheckTask', 'CodeExecutionLLMTask', 'CodeGenerationLLMTask', 'EmbeddingTask', 'TextToSpeechTask', 'WebScrapeBeautifulSoupTask']
