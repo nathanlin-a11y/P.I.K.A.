@@ -3,7 +3,7 @@ from .prompt_agent_tasks import PromptAgentTask, CheckTask, CodeExecutionLLMTask
 from .api_tasks import APITask
 from .task import PIKATask
 from .workflow import Workflow
-from .embedding_tasks import EmbeddingTask
+from .embedding_tasks import EmbeddingTask, RetrievalTask
 from .img_gen_tasks import GenerateImageTask
 from .tts_tasks import TextToSpeechTask
 from .web_scrapping_tasks import WebScrapeBeautifulSoupTask
@@ -14,10 +14,11 @@ available_task_types: list[PIKATask] = [
     CodeExecutionLLMTask,
     CheckTask,
     APITask,
+    RetrievalTask,
     EmbeddingTask,
     GenerateImageTask,
     TextToSpeechTask,
     WebScrapeBeautifulSoupTask
 ]
-__all__ = ['PIKATask', 'Workflow', 'BasicAgentTask', 'PromptAgentTask', 'APITask', 'APISearchTask', 'GenerateImageTask', 
+__all__ = ['PIKATask', 'Workflow', 'BasicAgentTask', 'PromptAgentTask', 'APITask', 'APISearchTask', 'GenerateImageTask', 'RetrievalTask',
            'CheckTask', 'CodeExecutionLLMTask', 'CodeGenerationLLMTask', 'EmbeddingTask', 'TextToSpeechTask', 'WebScrapeBeautifulSoupTask']
