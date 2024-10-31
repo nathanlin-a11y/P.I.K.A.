@@ -2,8 +2,7 @@ from bson import ObjectId
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, Union
 from workflow.util import LOGGER
-from workflow.core.data_structures import ApiType, ApiName, ModelConfig, ModelApis
-from workflow.core.model import PIKAModel
+from workflow.core.data_structures import ApiType, ApiName, ModelConfig, ModelApis, PIKAModel
 
 class API(BaseModel):
     """

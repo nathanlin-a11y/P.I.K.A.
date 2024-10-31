@@ -4,9 +4,8 @@ from bson import ObjectId
 from pydantic import BaseModel, Field, ConfigDict, model_validator
 from typing import List, Optional, Dict, Callable, Any
 from workflow.util import LOGGER
-from workflow.core.data_structures import MessageDict, ToolFunction, ContentType, References, UserInteraction, UserCheckpoint
+from workflow.core.data_structures import MessageDict, ToolFunction, ContentType, References, UserInteraction, UserCheckpoint, Prompt
 from workflow.core.agent import PIKAAgent
-from workflow.core.prompt import Prompt
 from workflow.core.api import APIManager
 from workflow.core.tasks import PIKATask
 
