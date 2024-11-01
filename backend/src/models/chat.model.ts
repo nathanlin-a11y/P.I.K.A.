@@ -27,10 +27,11 @@ changeHistorySchema.methods.apiRepresentation = function (this: IChangeHistoryDo
 // PIKAChat schema
 const pikaChatSchema = new Schema<IPIKAChatDocument, IPIKAChatModel>({
   name: { type: String, default: "New Chat", description: "Name of the chat" },
-  messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }], 
+  messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   changeHistory: [{ type: changeHistorySchema, default: [], description: "List of changes in the chat conversation" }],
   pika_agent: { type: Schema.Types.ObjectId, ref: 'Agent', required: true, description: "The PIKA agent object" },
   functions: [{ type: Schema.Types.ObjectId, ref: 'Task', default: [], description: "List of functions to be registered with the agent" }],
+  user_checkpoints: { type: Map, of: [{ type: Schema.Types.ObjectId, ref: 'UserCheckpoint' }], default: {}, description: "Map of user checkpoints" },
   created_by: { type: Schema.Types.ObjectId, ref: 'User' },
   updated_by: { type: Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
@@ -42,6 +43,7 @@ pikaChatSchema.methods.apiRepresentation = function (this: IPIKAChatDocument) {
     changeHistory: this.changeHistory.map((change) => change.apiRepresentation()),
     pika_agent: this.pika_agent ? (this.pika_agent._id || this.pika_agent) : null,
     functions: this.functions.map((func) => func._id || func),
+    user_checkpoints: this.user_checkpoints || {},
     created_by: this.created_by ? (this.created_by._id || this.created_by) : null,
     updated_by: this.updated_by ? (this.updated_by._id || this.updated_by) : null,
     createdAt: this.createdAt || null,
@@ -62,6 +64,13 @@ function ensureObjectIdForSave(
   if (this.messages) {
     this.messages = this.messages.map((message) => ensureObjectIdHelper(message));
   }
+  if (this.user_checkpoints && Object.keys(this.user_checkpoints).length > 0) {
+    const newCheckpoints: { [key: string]: any } = {};
+    for (const key in this.user_checkpoints) {
+      newCheckpoints[key] = ensureObjectIdHelper(this.user_checkpoints[key]);
+    }
+    this.user_checkpoints = newCheckpoints;
+  }
   next();
 }
 
@@ -79,12 +88,23 @@ function ensureObjectIdForUpdate(
   if (update.messages) {
     update.messages = update.messages.map((message: any) => ensureObjectIdHelper(message));
   }
+  if (update.user_checkpoints && Object.keys(update.user_checkpoints).length > 0) {
+    const newCheckpoints: { [key: string]: any } = {};
+    for (const key in update.user_checkpoints) {
+      newCheckpoints[key] = ensureObjectIdHelper(update.user_checkpoints[key]);
+    }
+    update.user_checkpoints = newCheckpoints;
+  }
   next();
 }
 
 function autoPopulate(this: mongoose.Query<any, any>) {
   this.populate('pika_agent created_by updated_by')
     .populate('functions')
+    .populate({
+      path: 'user_checkpoints.$*',
+      model: 'UserCheckpoint'
+    })
     .populate('messages'); // Only need to populate messages at the top level
 }
 

@@ -4,7 +4,7 @@ from bson import ObjectId
 from pydantic import BaseModel, Field, ConfigDict, model_validator
 from typing import List, Optional, Dict, Callable, Any
 from workflow.util import LOGGER
-from workflow.core.data_structures import MessageDict, ToolFunction, ContentType, References, UserInteraction, UserCheckpoint, Prompt
+from workflow.core.data_structures import MessageDict, ToolFunction, ContentType, References, UserInteraction, UserCheckpoint, Prompt, User
 from workflow.core.agent import PIKAAgent
 from workflow.core.api import APIManager
 from workflow.core.tasks import PIKATask
@@ -52,6 +52,14 @@ class PIKAChat(BaseModel):
         description="The PIKA agent object. Default is base PIKA Agent.")
     functions: Optional[List[PIKATask]] = Field([], description="List of functions to be registered with the agent")
     model_config = ConfigDict(protected_namespaces=(), json_encoders = {ObjectId: str})
+    user_checkpoints: Dict[str, UserCheckpoint] = Field(
+        default_factory=dict,
+        description="Node-specific user interaction checkpoints"
+    )
+    data_cluster: Optional[References] = Field(
+        default=None,
+        description="Associated data cluster"
+    )
 
     @model_validator(mode='after')
     def initialize_default_checkpoints(self) -> 'PIKAChat':
@@ -96,7 +104,7 @@ class PIKAChat(BaseModel):
             combined_function_map.update(function_details["function_map"])
         return combined_function_map
 
-    async def generate_response(self, api_manager: APIManager, new_message: Optional[str] = None) -> List[MessageDict]:
+    async def generate_response(self, api_manager: APIManager, new_message: Optional[str] = None, user_data: Optional[User] = None) -> List[MessageDict]:
         """Main entry point for generating responses in the chat."""
         try:
             if not self.messages:
@@ -117,20 +125,20 @@ class PIKAChat(BaseModel):
                     return await self._handle_pending_checkpoint(api_manager, user_interaction)
 
             # Start new chat turn sequence
-            return await self._execute_chat_turns(api_manager)
+            return await self._execute_chat_turns(api_manager, user_data)
         except Exception as e:
             error_msg = f"Error in chat generate_response: {str(e)}\nTraceback: {traceback.format_exc()}"
             LOGGER.error(error_msg)
             return [self._create_error_message(error_msg)]
 
-    async def _execute_chat_turns(self, api_manager: APIManager) -> List[MessageDict]:
+    async def _execute_chat_turns(self, api_manager: APIManager, user_data: Optional[User] = None) -> List[MessageDict]:
         """Execute a sequence of chat turns until completion or max turns reached."""
         all_generated_messages = []
         turn_count = 0
         
         while turn_count < self.pika_agent.max_consecutive_auto_reply:
             try:
-                turn_messages = await self._execute_single_turn(api_manager, all_generated_messages)
+                turn_messages = await self._execute_single_turn(api_manager, all_generated_messages, user_data)
                 
                 if not turn_messages:
                     break
@@ -155,7 +163,7 @@ class PIKAChat(BaseModel):
 
         return all_generated_messages
 
-    async def _execute_single_turn(self, api_manager: APIManager, previous_messages: List[MessageDict]) -> List[MessageDict]:
+    async def _execute_single_turn(self, api_manager: APIManager, previous_messages: List[MessageDict], user_data: Optional[User] = None) -> List[MessageDict]:
         """Execute a single turn of the conversation (LLM -> tools -> code)."""
         turn_messages = []
         
@@ -164,12 +172,13 @@ class PIKAChat(BaseModel):
             llm_message = await self._generate_llm_response(
                 api_manager,
                 self.messages + previous_messages,
-                self.tool_list(api_manager)
+                self.tool_list(api_manager),
+                user_data=user_data
             )
             turn_messages.append(llm_message)
 
             # Step 2: Handle tool calls if present
-            if llm_message.tool_calls and self.pika_agent.has_functions:
+            if llm_message.tool_calls and self.pika_agent.has_tools:
                 tool_messages = await self._handle_tool_calls(
                     api_manager,
                     llm_message.tool_calls,
@@ -196,10 +205,10 @@ class PIKAChat(BaseModel):
 
     async def _handle_tool_calls(self, api_manager: APIManager, tool_calls: List[Dict], parent_message: MessageDict) -> List[MessageDict]:
         """Handle tool calls with permission checking."""
-        if self.pika_agent.has_functions == 1:  # DISABLED
+        if self.pika_agent.has_tools == 0:  # DISABLED
             return []
             
-        if self.pika_agent.has_functions == 2:  # WITH_PERMISSION
+        if self.pika_agent.has_tools == 2:  # WITH_PERMISSION
             # Check for existing interaction
             user_interaction = self._get_user_interaction(parent_message)
             if not user_interaction:
@@ -226,7 +235,7 @@ class PIKAChat(BaseModel):
             return []
 
         # Check for code blocks
-        code_blocks = self.pika_agent.collect_code_blocks(messages)
+        code_blocks = self.pika_agent.collect_code_blocs(messages)
         if not code_blocks:
             return []
 
@@ -299,9 +308,9 @@ class PIKAChat(BaseModel):
             assistant_name=self.pika_agent.name
         )
 
-    async def _generate_llm_response(self, api_manager: APIManager, messages: List[MessageDict], tools_list: List[ToolFunction]) -> MessageDict:
+    async def _generate_llm_response(self, api_manager: APIManager, messages: List[MessageDict], tools_list: List[ToolFunction], **kwargs) -> MessageDict:
         """Generate LLM response with appropriate tools configuration."""
-        return await self.pika_agent.generate_llm_response(api_manager, messages, tools_list)
+        return await self.pika_agent.generate_llm_response(api_manager, messages, tools_list, **kwargs)
     
     def deep_validate_required_apis(self, api_manager: APIManager) -> Dict[str, Any]:
         result = {

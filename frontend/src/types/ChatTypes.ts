@@ -3,6 +3,8 @@ import { PIKATask, convertToPIKATask } from './TaskTypes';
 import { PIKAAgent, convertToPIKAAgent } from './AgentTypes';
 import { EnhancedComponentProps } from './CollectionTypes';
 import { convertToMessageType, MessageType } from './MessageTypes';
+import { UserCheckpoint } from './UserCheckpointTypes';
+import { References } from './ReferenceTypes';
 
 export interface PIKAChat extends BaseDataseObject {
     _id: string;
@@ -10,6 +12,8 @@ export interface PIKAChat extends BaseDataseObject {
     messages: MessageType[];
     pika_agent: PIKAAgent;
     functions?: PIKATask[];
+    user_checkpoints?: { [key: string]: UserCheckpoint };
+    data_cluster?: References;
 }
 
 export const convertToPIKAChat = (data: any): PIKAChat => {
@@ -19,6 +23,8 @@ export const convertToPIKAChat = (data: any): PIKAChat => {
         messages: (data?.messages || []).map(convertToMessageType),
         pika_agent: convertToPIKAAgent(data?.pika_agent),
         functions: (data?.functions || []).map(convertToPIKATask),
+        user_checkpoints: data?.user_checkpoints || {},
+        data_cluster: data?.data_cluster || {},
         created_by: data?.created_by || undefined,
         updated_by: data?.updated_by || undefined,
         createdAt: data?.createdAt ? new Date(data.createdAt) : undefined,
@@ -40,4 +46,6 @@ export const getDefaultChatForm = (): Partial<PIKAChat> => ({
     messages: [],
     pika_agent: undefined,
     functions: [],
+    user_checkpoints: {},
+    data_cluster: {},
 });

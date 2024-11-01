@@ -14,7 +14,7 @@ def sample_chat():
         pika_agent=PIKAAgent(
             name="TestAgent",
             system_message=Prompt(name="test", content="You are a test assistant"),
-            has_functions=True,
+            has_tools=True,
             has_code_exec=True,
         ),
     )
