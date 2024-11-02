@@ -31,7 +31,7 @@ export enum ModelType {
 Each model in the system is represented by the `PIKAModel` interface:
 
 ```typescript
-export interface PIKAModel extends BaseDataseObject {
+export interface PIKAModel extends BaseDatabaseObject {
     _id?: string;
     short_name: string;
     model_name: string;

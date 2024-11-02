@@ -7,7 +7,7 @@ Chats represent ongoing conversations between users and AI agents. They encapsul
 Each chat in the system is represented by the `PIKAChat` interface:
 
 ```typescript
-export interface PIKAChat extends BaseDataseObject {
+export interface PIKAChat extends BaseDatabaseObject {
     _id: string;
     name: string;
     messages: MessageType[];

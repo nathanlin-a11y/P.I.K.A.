@@ -73,7 +73,7 @@ export enum CodePermission {
   WITH_PERMISSION = 2,
   TAGGED_ONLY = 3
 }
-export interface PIKAAgent extends BaseDataseObject {
+export interface PIKAAgent extends BaseDatabaseObject {
   _id?: string;
   name: string;
   system_message: Prompt;
