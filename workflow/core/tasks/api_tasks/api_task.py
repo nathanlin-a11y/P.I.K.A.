@@ -5,6 +5,7 @@ from workflow.core.api import (
 )
 from workflow.core.data_structures import ApiType, NodeResponse, References, TasksEndCodeRouting
 from workflow.core.tasks.task import PIKATask
+from workflow.util import get_traceback
 
 class APITask(PIKATask):
     """
@@ -128,8 +129,7 @@ class APITask(PIKATask):
                 references=references,
             )
         except Exception as e:
-            import traceback
-            error_message = f'Error: {e}\nTraceback: {traceback.format_exc()}'
+            error_message = f'Error: {e}\nTraceback: {get_traceback()}'
             return NodeResponse(
                 parent_task_id=self.id,
                 node_name="default",
