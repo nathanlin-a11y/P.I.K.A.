@@ -4,6 +4,7 @@ import useStyles from './URLReferenceStyles';
 import { URLReference } from '../../../types/URLReferenceTypes';
 import CustomMarkdown from '../../ui/markdown/CustomMarkdown';
 import { CopyButton } from '../../ui/markdown/CopyButton';
+import PIKAMarkdown from '../../ui/markdown/pika_markdown/PIKAMarkdown';
 
 interface URLReferenceViewerProps {
   result: URLReference;
@@ -27,7 +28,7 @@ export const URLReferenceViewer: React.FC<URLReferenceViewerProps> = ({ result }
           {result.url} [<Link href={result.url} target="_blank" rel="noopener noreferrer" color="primary">LINK</Link>]
         </Typography>
         <Typography variant="subtitle1" className={classes.sectionLabel}>CONTENT:</Typography>
-        <CustomMarkdown className={classes.urlReferenceBody}>{result.content}</CustomMarkdown>
+        <PIKAMarkdown showCopyButton>{result.content}</PIKAMarkdown>
         {result.metadata && Object.keys(result.metadata).length > 0 && (
           <>
             <Typography variant="subtitle1" className={classes.sectionLabel}>Metadata:</Typography>
