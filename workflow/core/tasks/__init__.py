@@ -17,5 +17,5 @@ available_task_types: list[PIKATask] = [
     TextToSpeechTask,
     WebScrapeBeautifulSoupTask
 ]
-__all__ = ['PIKATask', 'Workflow', 'PromptAgentTask', 'APITask', 'APISearchTask', 'GenerateImageTask', 'RetrievalTask',
+__all__ = ['PIKATask', 'Workflow', 'PromptAgentTask', 'APITask', 'APISearchTask', 'GenerateImageTask', 'RetrievalTask', 'generate_node_responses_summary', 'validate_and_process_function_inputs',
            'CheckTask', 'CodeExecutionLLMTask', 'CodeGenerationLLMTask', 'EmbeddingTask', 'TextToSpeechTask', 'WebScrapeBeautifulSoupTask']

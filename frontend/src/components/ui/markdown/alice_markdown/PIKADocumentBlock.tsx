@@ -1,11 +1,11 @@
 import { Box, Typography, Divider } from "@mui/material";
 import React from "react";
 import { DialogWrapper } from "./DialogWrapper";
-import CustomMarkdown from "../CustomMarkdown";
 import { getLanguageFromType, getNodeContent } from "./CustomBlockUtils";
 import { CodeBlock } from "../CodeBlock";
 import { Article, Description, Code } from "@mui/icons-material";
 import PIKAMarkdown from "./PIKAMarkdown";
+import Logger from "../../../../utils/Logger";
 
 const getIconByType = (type: string) => {
   if (type.startsWith('text/plain')) {
@@ -23,6 +23,7 @@ export const PIKADocumentBlockComponent: React.FC<{ node: any }> = ({ node }) =>
   
   const attributes = node.data?.attributes || {};
   const identifier = attributes.identifier || 'Document';
+  Logger.debug('PIKADocumentBlockComponent', 'identifier', identifier);
   const type = attributes.type || 'text/plain';
   const title = attributes.title || 'PIKA Document';
   
