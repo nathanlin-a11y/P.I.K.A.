@@ -310,8 +310,7 @@ class ResourceTask(PIKATask):
         return values
 ```
 
-### Best Practices for Custom Tasks
-
+### Best Practices for Custom Tasks aasdasd
 1. **Pydantic Usage**
    - Use Field() for all attributes with descriptions and defaults
    - Implement model validators for complex validation

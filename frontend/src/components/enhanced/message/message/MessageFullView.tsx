@@ -10,7 +10,7 @@ import { useCardDialog } from '../../../../contexts/CardDialogContext';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNotification } from '../../../../contexts/NotificationContext';
 import PIKAMarkdown, { CustomBlockType } from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
-import DataClusterManager from '../../data_cluster/DataClusterManager';
+import DataClusterManager from '../../data_cluster/data_cluster_manager/DataClusterManager';
 import { hasAnyReferences } from '../../../../types/ReferenceTypes';
 
 const MessageFullView: React.FC<MessageComponentProps> = ({ item: message }) => {
