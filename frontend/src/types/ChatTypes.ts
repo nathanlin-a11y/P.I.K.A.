@@ -10,7 +10,7 @@ export interface PIKAChat extends BaseDatabaseObject {
     messages: MessageType[];
     pika_agent: PIKAAgent;
     agent_tools?: PIKATask[];
-    user_checkpoints?: { [key: string]: UserCheckpoint };
+    default_user_checkpoints?: { [key: string]: UserCheckpoint };
     data_cluster?: DataCluster;
     retrieval_tools?: PIKATask[];
 }
@@ -22,7 +22,7 @@ export const convertToPIKAChat = (data: any): PIKAChat => {
         messages: (data?.messages || []).map(convertToMessageType),
         pika_agent: convertToPIKAAgent(data?.pika_agent),
         agent_tools: (data?.agent_tools || []).map(convertToPIKATask),
-        user_checkpoints: data?.user_checkpoints || undefined,
+        default_user_checkpoints: data?.default_user_checkpoints || undefined,
         data_cluster: data?.data_cluster ? convertToDataCluster(data?.data_cluster) : undefined,
         retrieval_tools: (data?.retrieval_tools || []).map(convertToPIKATask),
     };
@@ -42,7 +42,7 @@ export const getDefaultChatForm = (): Partial<PIKAChat> => ({
     messages: [],
     pika_agent: undefined,
     agent_tools: [],
-    user_checkpoints: {},
+    default_user_checkpoints: {},
     data_cluster: {},
     retrieval_tools: undefined,
 });
