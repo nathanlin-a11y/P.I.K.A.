@@ -1,0 +1,1 @@
+export type ModelName = 'Agent' | 'Model' | 'Task' | 'Prompt' | 'TaskResult' | 'PIKAChat' | 'API' | 'ParameterDefinition' | 'User' | 'FileReference' | 'Message' | 'URLReference' | 'UserInteraction' | 'UserCheckpoint' | 'DataCluster' | 'EmbeddingChunk' | 'ToolCall' | 'CodeExecution' | 'APIConfig';
