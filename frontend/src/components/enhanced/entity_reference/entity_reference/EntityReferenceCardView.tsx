@@ -4,12 +4,12 @@ import {
     Link,
 } from '@mui/material';
 import { Language, Description, QueryBuilder, DataObject } from '@mui/icons-material';
-import { URLReferenceComponentProps } from '../../../../types/URLReferenceTypes';
+import { EntityReferenceComponentProps } from '../../../../types/EntityReferenceTypes';
 import CommonCardView from '../../common/enhanced_component/CardView';
 import { CodeBlock } from '../../../ui/markdown/CodeBlock';
 import PIKAMarkdown from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 
-const URLReferenceCardView: React.FC<URLReferenceComponentProps> = ({
+const EntityReferenceCardView: React.FC<EntityReferenceComponentProps> = ({
     item
 }) => {
 
@@ -35,7 +35,7 @@ const URLReferenceCardView: React.FC<URLReferenceComponentProps> = ({
         {
             icon: <Description />,
             primary_text: "Content",
-            secondary_text: <PIKAMarkdown showCopyButton children={item.content} />
+            secondary_text: <PIKAMarkdown showCopyButton children={item.content ?? ''} />
         },
         {
             icon: <DataObject />,
@@ -47,14 +47,14 @@ const URLReferenceCardView: React.FC<URLReferenceComponentProps> = ({
     return (
         <CommonCardView
             elementType='URL Reference'
-            title={item.title}
+            title={item.name ?? ''}
             id={item._id}
             listItems={listItems}
             item={item}
-            itemType='urlreferences'
+            itemType='entityreferences'
         >
         </CommonCardView>
     );
 };
 
-export default URLReferenceCardView;
+export default EntityReferenceCardView;
