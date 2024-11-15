@@ -144,7 +144,7 @@ base_chat_module = BaseChatModule(
                 "name": "GPT4 Chat",
                 "pika_agent": "gpt_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             },
@@ -153,7 +153,7 @@ base_chat_module = BaseChatModule(
                 "name": "Claude Chat",
                 "pika_agent": "claude_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             },
@@ -162,7 +162,7 @@ base_chat_module = BaseChatModule(
                 "name": "LMStudio Chat",
                 "pika_agent": "lm_studio_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             },
@@ -171,7 +171,7 @@ base_chat_module = BaseChatModule(
                 "name": "Gemini Chat",
                 "pika_agent": "gemini_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             },
@@ -180,7 +180,7 @@ base_chat_module = BaseChatModule(
                 "name": "Mistral Chat",
                 "pika_agent": "mistral_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             },
@@ -189,7 +189,7 @@ base_chat_module = BaseChatModule(
                 "name": "Cohere Chat",
                 "pika_agent": "cohere_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             },
@@ -198,7 +198,7 @@ base_chat_module = BaseChatModule(
                 "name": "Llama Chat",
                 "pika_agent": "llama_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             },
@@ -207,7 +207,7 @@ base_chat_module = BaseChatModule(
                 "name": "Groq Chat",
                 "pika_agent": "groq_pika",
                 "default_user_checkpoints": {
-                    "tool_calls": "default_tool_call_checkpoint",
+                    "tool_call": "default_tool_call_checkpoint",
                     "code_exec": "default_code_exec_checkpoint"
                 }
             }
