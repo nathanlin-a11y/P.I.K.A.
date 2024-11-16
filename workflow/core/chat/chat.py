@@ -442,7 +442,7 @@ class PIKAChat(BaseDataStructure):
         
         # Validate LLM API
         try:
-            if not api_manager.get_api_by_type("llm_api", self.pika_agent.llm_model):
+            if not api_manager.get_api_by_type("llm_api", self.pika_agent.llm_model.api_name):
                 result["status"] = "warning"
                 result["llm_api"] = "not_found"
                 result["warnings"].append("Required LLM API is not active or not found.")
