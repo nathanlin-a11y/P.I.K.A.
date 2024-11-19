@@ -1,5 +1,16 @@
+import { FunctionParameters } from "../../../../../types/ParameterTypes";
+import { Prompt } from "../../../../../types/PromptTypes";
 import { PIKATask, RouteMap } from "../../../../../types/TaskTypes";
-import { SimpleTaskData } from "./SimpleTaskNode";
+
+export interface BaseTaskData {
+  task_name: string;
+  input_variables: FunctionParameters | null;
+  exit_codes: { [key: string]: string };
+  templates: { [key: string]: Prompt | null };
+  onSizeChange: (id: string, width: number, height: number) => void;
+}
+
+export interface TaskNodeData extends PIKATask, BaseTaskData {}
 
 export const getTaskByName = (
   parentTask: Partial<PIKATask>,
@@ -16,7 +27,7 @@ export const getTaskRouteMap = (
 };
 
 // Create a type without onSizeChange for internal use
-type SimpleTaskDataWithoutCallback = Omit<SimpleTaskData, 'onSizeChange'>;
+type SimpleTaskDataWithoutCallback = Omit<BaseTaskData, 'onSizeChange'>;
 
 export const getNodeData = (
   parentTask: Partial<PIKATask>,
@@ -39,7 +50,8 @@ export const getNodeData = (
   return {
     task_name: taskName,
     input_variables: parentTask.input_variables || null,
-    exit_codes: parentTask.exit_codes || {}
+    exit_codes: parentTask.exit_codes || {},
+    templates: parentTask.templates || {},
   };
 };
 
