@@ -1,16 +1,18 @@
-import { PIKAAgent } from "./AgentTypes";
-import { RequiredCheckpoints } from "./ChatTypes";
+import { CheckpointType, RequiredCheckpoints } from "./ChatTypes";
 import { BasicDBObj, convertToBasicDBObj } from "./CollectionTypes";
-import { DataCluster } from "./DataClusterTypes";
-import { PIKATask } from "./TaskTypes";
 
+export type UserCheckpoints = {
+    [CheckpointType.TOOL_CALL]: string;
+    [CheckpointType.CODE_EXECUTION]: string;
+};
 export interface UserDefaultChatConfig {
-    pika_agent: PIKAAgent;
-    agent_tools: PIKATask[];
-    retrieval_tools: PIKATask[];
-    data_cluster?: DataCluster;
-    default_user_checkpoints: RequiredCheckpoints;
+    pika_agent: string;
+    agent_tools: string[];
+    retrieval_tools: string[];
+    data_cluster?: string;
+    default_user_checkpoints: UserCheckpoints;
 }
+
 export interface User extends BasicDBObj {
     name: string;
     email: string;
