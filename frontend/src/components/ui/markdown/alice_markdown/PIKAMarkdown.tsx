@@ -128,6 +128,7 @@ const PIKAMarkdown: FC<PIKAMarkdownProps> = ({
         
         return null;
     };
+    Logger.debug('[Markdown:PIKAMarkdown] Blocks to render:', blocks);
 
     return (
         <Box className={clsx("relative", getRoleClassName())}>
