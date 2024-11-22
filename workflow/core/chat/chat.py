@@ -328,7 +328,7 @@ class PIKAChat(BaseDataStructure):
             turn_messages.append(llm_message)
 
             # Handle tool calls
-            if llm_message.references.tool_calls and self.pika_agent.has_tools:
+            if llm_message.references.tool_calls:
                 tool_messages = await self._handle_tool_calls(
                     api_manager,
                     llm_message.references.tool_calls,
@@ -338,10 +338,9 @@ class PIKAChat(BaseDataStructure):
                     turn_messages.extend(tool_messages)
 
             # Handle code execution
-            if self.pika_agent.has_code_exec:
-                code_messages = await self._handle_code_execution([llm_message], False)
-                if code_messages:
-                    turn_messages.extend(code_messages)
+            code_messages = await self._handle_code_execution([llm_message], False)
+            if code_messages:
+                turn_messages.extend(code_messages)
 
             return turn_messages
 
