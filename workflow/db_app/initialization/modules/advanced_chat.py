@@ -41,7 +41,7 @@ advanced_chat_module = AdvancedChatModule(
             },
             {
                 "key": "oai_pika_adv",
-                "name": "PIKA w/ approve-tools (OAI)",
+                "name": "PIKA w/ tool w/ user permission (OAI)",
                 "system_message": "default_system_message",
                 "models": {
                     "chat": "gpt-4o-mini",

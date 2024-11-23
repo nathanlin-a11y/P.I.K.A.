@@ -67,9 +67,9 @@ export const resumeChat = async (interaction: UserInteraction): Promise<PIKAChat
     const response = await taskAxiosInstance.post(`/chat_resume`, {
       interaction_id: interaction._id
     });
+    Logger.debug('Received response from chat resume:', response.data);
     const chat_id = interaction.owner.id
     const updated_chat = await fetchItem('chats', chat_id) as PIKAChat;
-    
     return convertToPIKAChat(updated_chat);
   } catch (error) {
     Logger.error('Error resuming chat:', error);
