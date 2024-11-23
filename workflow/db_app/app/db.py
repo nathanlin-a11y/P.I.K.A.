@@ -303,10 +303,10 @@ class BackendAPI(BaseModel):
                     
                     if isinstance(chats, list):
                         chats = [await self.preprocess_data(chat) for chat in chats]
-                        return {chat["_id"]: await self.populate_chat(chat) for chat in chats}
+                        return {chat["_id"]: PIKAChat(**chat) for chat in chats}
                     else:
                         chats = await self.preprocess_data(chats)
-                        return {chats['_id']: await self.populate_chat(chats)}
+                        return {chats['_id']: PIKAChat(**chats)}
             except aiohttp.ClientError as e:
                 LOGGER.error(f"Error retrieving chats: {e}")
                 return {}

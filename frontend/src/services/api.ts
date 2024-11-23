@@ -58,14 +58,19 @@ export const resumeChat = async (interaction: UserInteraction): Promise<PIKAChat
     if (interaction.owner.type !== InteractionOwnerType.CHAT) {
       throw new Error(`Cannot resume interaction with owner type: ${interaction.owner.type}. Expected: ${InteractionOwnerType.CHAT}`);
     }
+    if (!interaction.owner.id) {
+      throw new Error('Chat interaction does not have an owner ID');
+    }
 
     Logger.debug('Resuming chat with interaction:', interaction);
     
-    const response = await taskAxiosInstance.post('/chat_resume', {
+    const response = await taskAxiosInstance.post(`/chat_resume`, {
       interaction_id: interaction._id
     });
+    const chat_id = interaction.owner.id
+    const updated_chat = await fetchItem('chats', chat_id) as PIKAChat;
     
-    return convertToPIKAChat(response.data);
+    return convertToPIKAChat(updated_chat);
   } catch (error) {
     Logger.error('Error resuming chat:', error);
     throw error;
