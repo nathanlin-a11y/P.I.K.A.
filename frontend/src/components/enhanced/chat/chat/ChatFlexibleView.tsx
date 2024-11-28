@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import {
     Box,
-    Typography,
     Alert,
 } from '@mui/material';
 import { ChatComponentProps, PIKAChat, getDefaultChatForm, CheckpointType } from '../../../../types/ChatTypes';
