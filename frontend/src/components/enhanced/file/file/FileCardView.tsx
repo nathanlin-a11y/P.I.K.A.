@@ -3,7 +3,6 @@ import { Typography } from '@mui/material';
 import { FileComponentProps } from '../../../../types/FileTypes';
 import CommonCardView from '../../common/enhanced_component/CardView';
 import { InsertDriveFile, CalendarToday, AccessTime, TextSnippet, AttachFile, QueryBuilder, DataObject } from '@mui/icons-material';
-import FileViewer from './FileViewer';
 import { bytesToMB } from '../../../../utils/FileUtils';
 import PIKAMarkdown from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 import EmbeddingChunkViewer from '../../embedding_chunk/embedding_chunk/EmbeddingChunkViewer';
