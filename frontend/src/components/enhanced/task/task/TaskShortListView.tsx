@@ -9,7 +9,7 @@ const TaskShortListView: React.FC<TaskComponentProps> = ({
     onView,
 }) => {
     const getPrimaryText = (task: PIKATask) => task.task_name;
-    const getSecondaryText = (task: PIKATask) => `[${task.task_type || ''}]${task.task_description || ''}`
+    const getSecondaryText = (task: PIKATask) => `[${task.task_type || ''}] ${task.task_description || ''}`
 
     return (
         <EnhancedShortListView<PIKATask>

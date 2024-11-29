@@ -4,6 +4,7 @@ import { PIKAAgent, AgentComponentProps } from '../../../../types/AgentTypes';
 import EnhancedListView from '../../common/enhanced_component/ListView';
 import { apiNameIcons } from '../../../../utils/ApiUtils';
 import { Api } from '@mui/icons-material';
+import { PermissionIcon } from '../PermissionIcons';
 
 const AgentListView: React.FC<AgentComponentProps> = ({
     items,
@@ -12,8 +13,17 @@ const AgentListView: React.FC<AgentComponentProps> = ({
     onView,
 }) => {
     const getPrimaryText = (agent: PIKAAgent) => agent.name;
+
     const getSecondaryText = (agent: PIKAAgent) => (
-        <Box display="flex" alignItems="center">
+        <Box display="flex" alignItems="center" gap={1}>
+            <PermissionIcon
+                permission={agent.has_tools}
+                type="tool"
+            />
+            <PermissionIcon
+                permission={agent.has_code_exec}
+                type="code"
+            />
             {agent.models?.chat && (
                 <Tooltip title={`Chat model API: ${agent.models?.chat.api_name}`}>
                     <IconButton size="small">
