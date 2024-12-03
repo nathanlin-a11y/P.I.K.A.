@@ -1,33 +1,38 @@
-import { BaseDataseObject } from "./UserTypes";
 import { PIKAModel, ModelType } from "./ModelTypes";
 import { Prompt } from "./PromptTypes";
-import { EnhancedComponentProps } from "./CollectionTypes";
+import { BaseDatabaseObject, convertToBaseDatabaseObject, EnhancedComponentProps } from "./CollectionTypes";
 
-export interface PIKAAgent extends BaseDataseObject {
-  _id?: string;
+export enum ToolPermission {
+  DISABLED = 0,
+  NORMAL = 1,
+  WITH_PERMISSION = 2,
+  DRY_RUN = 3
+}
+export enum CodePermission {
+  DISABLED = 0,
+  NORMAL = 1,
+  WITH_PERMISSION = 2,
+  TAGGED_ONLY = 3
+}
+
+export interface PIKAAgent extends BaseDatabaseObject {
   name: string;
   system_message: Prompt;
-  has_functions: boolean;
-  has_code_exec: boolean;
+  has_tools: ToolPermission;
+  has_code_exec: CodePermission;
   max_consecutive_auto_reply?: number;
   models?: { [key in ModelType]?: PIKAModel };
 }
 
-export const convertToPIKAAgent = (data: any): PIKAAgent => {
-  return {
-    _id: data?._id || undefined,
-    name: data?.name || '',
-    system_message: data?.system_message || {},
-    has_functions: data?.has_functions || false,
-    has_code_exec: data?.has_code_exec || false,
-    max_consecutive_auto_reply: data?.max_consecutive_auto_reply || undefined,
-    models: data?.models || {},
-    created_by: data?.created_by || undefined,
-    updated_by: data?.updated_by || undefined,
-    createdAt: data?.createdAt ? new Date(data.createdAt) : undefined,
-    updatedAt: data?.updatedAt ? new Date(data.updatedAt) : undefined,
-  };
-};
+export const convertToPIKAAgent = (data: PIKAAgent): PIKAAgent => ({
+  ...convertToBaseDatabaseObject(data),
+  name: data.name || '',
+  system_message: data.system_message || {},
+  has_tools: data.has_tools || 0,
+  has_code_exec: data.has_code_exec || 0,
+  max_consecutive_auto_reply: data.max_consecutive_auto_reply,
+  models: data.models || {},
+});
 
 export interface AgentComponentProps extends EnhancedComponentProps<PIKAAgent> {
 }
@@ -36,7 +41,36 @@ export const getDefaultAgentForm = (): Partial<PIKAAgent> => ({
   name: '',
   system_message: undefined,
   max_consecutive_auto_reply: 1,
-  has_functions: false,
-  has_code_exec: false,
+  has_tools: 0,
+  has_code_exec: 0,
   models: {},
 });
+
+export const mapCodePermission = (permission: CodePermission): string => {
+  switch (permission) {
+    case CodePermission.DISABLED:
+      return 'Disabled';
+    case CodePermission.NORMAL:
+      return 'Normal';
+    case CodePermission.WITH_PERMISSION:
+      return 'With Permission';
+    case CodePermission.TAGGED_ONLY:
+      return 'Tagged Only';
+    default:
+      return 'Unknown';
+  }
+}
+export const mapToolPermission = (permission: ToolPermission): string => {
+  switch (permission) {
+    case ToolPermission.DISABLED:
+      return 'Disabled';
+    case ToolPermission.NORMAL:
+      return 'Normal';
+    case ToolPermission.WITH_PERMISSION:
+      return 'With Permission';
+    case ToolPermission.DRY_RUN:
+      return 'Dry Run';
+    default:
+      return 'Unknown';
+  }
+}

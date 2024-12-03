@@ -1,6 +1,7 @@
 import React from 'react';
 import { TaskComponentProps, PIKATask } from '../../../../types/TaskTypes';
 import EnhancedTableView, { Column } from '../../common/enhanced_component/TableView';
+import { formatStringWithSpaces } from '../../../../utils/StyleUtils';
 
 const TaskTableView: React.FC<TaskComponentProps> = ({
   items,
@@ -13,7 +14,7 @@ const TaskTableView: React.FC<TaskComponentProps> = ({
   const columns: Column<PIKATask>[] = [
     {
       header: 'Task Name',
-      render: (task: PIKATask) => task.task_name,
+      render: (task: PIKATask) => formatStringWithSpaces(task.task_name),
       sortKey: 'task_name'
     },
     {

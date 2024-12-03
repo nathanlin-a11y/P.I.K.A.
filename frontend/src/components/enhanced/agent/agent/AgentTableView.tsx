@@ -21,12 +21,12 @@ const AgentTableView: React.FC<AgentComponentProps> = ({
     },
     {
       header: 'Tool',
-      render: (agent: PIKAAgent) => agent.has_functions ? 'Yes' : 'No',
-      sortKey: 'has_functions'
+      render: (agent: PIKAAgent) => agent.has_tools,
+      sortKey: 'has_tools'
     },
     {
       header: 'Code',
-      render: (agent: PIKAAgent) => agent.has_code_exec ? 'Yes' : 'No',
+      render: (agent: PIKAAgent) => agent.has_code_exec,
       sortKey: 'has_code_exec'
     }
   ];
