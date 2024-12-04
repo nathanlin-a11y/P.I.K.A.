@@ -33,6 +33,7 @@ const MessageCardView: React.FC<MessageComponentProps> = ({
                 <PIKAMarkdown
                     enabledBlocks={[CustomBlockType.PIKA_DOCUMENT, CustomBlockType.ANALYSIS]}
                     role={item.role}
+                    showCopyButton
                 >
                     {item.content}
                 </PIKAMarkdown>

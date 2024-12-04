@@ -81,7 +81,7 @@ const EmbeddingChunkViewer: React.FC<EmbeddingChunkComponentProps> = ({ item }) 
           </Box>
 
           {/* Content */}
-          <PIKAMarkdown>{item.text_content}</PIKAMarkdown>
+          <PIKAMarkdown showCopyButton>{item.text_content}</PIKAMarkdown>
 
           {/* Metadata */}
           {Object.keys(item.creation_metadata).length > 0 && (
