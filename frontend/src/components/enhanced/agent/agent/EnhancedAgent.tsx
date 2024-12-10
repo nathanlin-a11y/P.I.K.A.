@@ -14,6 +14,7 @@ type EnhancedAgentMode = BaseAgentMode | ExtendedAgentMode;
 
 interface EnhancedAgentProps extends Omit<AgentComponentProps, 'items' | 'item' | 'onChange' | 'handleSave' | 'mode'> {
   mode: EnhancedAgentMode;
+  item?: Partial<PIKAAgent> | null;
   itemId?: string;
   fetchAll: boolean;
   onSave?: (savedItem: PIKAAgent) => void;
@@ -68,6 +69,7 @@ const EnhancedAgent: React.FC<EnhancedAgentProps> = (props) => {
     <BaseDbElement<PIKAAgent>
       collectionName="agents"
       itemId={props.itemId}
+      partialItem={props.item || undefined}
       mode={baseDbMode}
       isInteractable={props.isInteractable}
       onInteraction={props.onInteraction}

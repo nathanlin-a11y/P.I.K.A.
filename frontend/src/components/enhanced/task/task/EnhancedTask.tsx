@@ -16,6 +16,7 @@ type EnhancedTaskMode = BaseTaskMode | ExtendedTaskMode;
 interface EnhancedTaskProps extends Omit<TaskComponentProps, 'items' | 'item' | 'onChange' | 'handleSave' | 'mode'> {
     mode: EnhancedTaskMode;
     itemId?: string;
+    item?: Partial<PIKATask> | null;
     fetchAll: boolean;
     onSave?: (savedItem: PIKATask) => void;
     onDelete?: (deletedItem: PIKATask) => Promise<void>;
@@ -71,6 +72,7 @@ const EnhancedTask: React.FC<EnhancedTaskProps> = (props) => {
         <BaseDbElement<PIKATask>
             collectionName="tasks"
             itemId={props.itemId}
+            partialItem={props.item || undefined}
             mode={baseDbMode}
             isInteractable={props.isInteractable}
             onInteraction={props.onInteraction}
