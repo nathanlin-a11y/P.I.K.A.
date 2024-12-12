@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { PIKATask } from '../types/TaskTypes';
-import { PIKAChat } from '../types/ChatTypes';
+import { PIKAChat, PopulatedPIKAChat } from '../types/ChatTypes';
 import { MessageType } from '../types/MessageTypes';
 import { useAuth } from './AuthContext';
 import { useApi } from './ApiContext';
 import Logger from '../utils/Logger';
 import { globalEventEmitter } from '../utils/EventEmitter';
+import { fetchPopulatedItem } from '../services/api';
 
 interface ChatContextType {
     messages: MessageType[];
@@ -21,7 +22,7 @@ interface ChatContextType {
     generateResponse: () => Promise<void>;
     handleRegenerateResponse: () => Promise<void>;
     fetchChats: () => Promise<void>;
-    currentChat: PIKAChat | null;
+    currentChat: PopulatedPIKAChat | null;
     addTaskToChat: (taskId: string) => Promise<void>;
     isTaskInChat: (taskId: string) => boolean;
 }
@@ -38,7 +39,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     const [pastChats, setPastChats] = useState<PIKAChat[]>([]);
     const [currentChatId, setCurrentChatId] = useState<string | null>(null);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
-    const [currentChat, setCurrentChat] = useState<PIKAChat | null>(null);
+    const [currentChat, setCurrentChat] = useState<PopulatedPIKAChat | null>(null);
     const { user } = useAuth();
 
     const fetchChats = useCallback(async () => {
@@ -56,15 +57,15 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         }
     }, [user, fetchChats]);
 
-    const fetchChatById = useCallback(async (chatId: string): Promise<PIKAChat> => {
+    const fetchChatById = useCallback(async (chatId: string): Promise<PopulatedPIKAChat> => {
         try {
-            const chatData = await fetchItem('chats', chatId) as PIKAChat;
+            const chatData = await fetchPopulatedItem('chats', chatId) as PopulatedPIKAChat;
             return chatData;
         } catch (error) {
             Logger.error('Error fetching chat by id:', error);
             throw error;
         }
-    }, [fetchItem]);
+    }, []);
 
     const fetchCurrentChat = useCallback(async () => {
         if (!currentChatId) return;

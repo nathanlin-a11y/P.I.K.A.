@@ -28,7 +28,7 @@ changeHistorySchema.methods.apiRepresentation = function (this: IChangeHistoryDo
 // PIKAChat schema
 const pikaChatSchema = new Schema<IPIKAChatDocument, IPIKAChatModel>({
   name: { type: String, default: "New Chat", description: "Name of the chat" },
-  messages: [{ type: Schema.Types.ObjectId, ref: 'Message', autopopulate: true }],
+  messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
   changeHistory: [{ type: changeHistorySchema, default: [], description: "List of changes in the chat conversation" }],
   pika_agent: { type: Schema.Types.ObjectId, ref: 'Agent', required: true, description: "The PIKA agent object", autopopulate: true },
   agent_tools: [{

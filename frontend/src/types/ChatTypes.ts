@@ -18,12 +18,15 @@ export type RequiredCheckpoints = {
 
 export interface PIKAChat extends BaseDatabaseObject {
     name: string;
-    messages: MessageType[];
+    messages: string[];
     pika_agent: PIKAAgent;
     agent_tools?: PIKATask[];
     retrieval_tools?: PIKATask[];
     default_user_checkpoints: RequiredCheckpoints;
     data_cluster?: DataCluster;
+}
+export interface PopulatedPIKAChat extends Omit<PIKAChat, 'messages'> {
+    messages: MessageType[];
 }
 
 export const convertToPIKAChat = (data: any): PIKAChat => {
@@ -35,6 +38,23 @@ export const convertToPIKAChat = (data: any): PIKAChat => {
     return {
         ...convertToBaseDatabaseObject(data),
         name: data?.name || '',
+        messages: data?.messages || [],
+        pika_agent: convertToPIKAAgent(data?.pika_agent),
+        agent_tools: (data?.agent_tools || []).map(convertToPIKATask),
+        default_user_checkpoints: defaultCheckpoints,
+        data_cluster: data?.data_cluster ? convertToDataCluster(data?.data_cluster) : undefined,
+        retrieval_tools: (data?.retrieval_tools || []).map(convertToPIKATask),
+    };
+};
+export const convertToPopulatedPIKAChat = (data: any): PopulatedPIKAChat => {
+    const defaultCheckpoints: RequiredCheckpoints = {
+        [CheckpointType.TOOL_CALL]: convertToUserCheckpoint(data?.default_user_checkpoints?.[CheckpointType.TOOL_CALL]) || {},
+        [CheckpointType.CODE_EXECUTION]: convertToUserCheckpoint(data?.default_user_checkpoints?.[CheckpointType.CODE_EXECUTION]) || {},
+    };
+    
+    return {
+        ...convertToBaseDatabaseObject(data),
+        name: data?.name || '',
         messages: (data?.messages || []).map(convertToMessageType),
         pika_agent: convertToPIKAAgent(data?.pika_agent),
         agent_tools: (data?.agent_tools || []).map(convertToPIKATask),
@@ -43,14 +63,14 @@ export const convertToPIKAChat = (data: any): PIKAChat => {
         retrieval_tools: (data?.retrieval_tools || []).map(convertToPIKATask),
     };
 };
-
-export interface MessageProps {
-    message: MessageType;
-    chatId?: string;
-}
+export const convertPopulatedToPIKAChat = (populatedChat: PopulatedPIKAChat): PIKAChat => {
+    return {
+        ...populatedChat,
+        messages: populatedChat.messages.map(message => message._id || '')
+    };
+};
 
 export interface ChatComponentProps extends EnhancedComponentProps<PIKAChat> {
-    showRegenerate?: boolean;
 }
 
 export const getDefaultChatForm = (): Partial<PIKAChat> => ({

@@ -3,7 +3,7 @@ import { Box, SelectChangeEvent } from '@mui/material';
 import { Add, Info, } from '@mui/icons-material';
 import { TaskResponse } from '../types/TaskResponseTypes';
 import { PIKATask } from '../types/TaskTypes';
-import { PIKAChat } from '../types/ChatTypes';
+import { PIKAChat, convertPopulatedToPIKAChat } from '../types/ChatTypes';
 import { TASK_SIDEBAR_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from '../utils/Constants';
 import { useChat } from '../contexts/ChatContext';
 import VerticalMenuSidebar from '../components/ui/vertical_menu/VerticalMenuSidebar';
@@ -66,13 +66,13 @@ const ChatPIKA: React.FC = () => {
 
   const filteredPastChats = useMemo(() => {
     // First filter the chats based on API provider
-    const filtered = !selectedApiProvider 
-      ? pastChats 
+    const filtered = !selectedApiProvider
+      ? pastChats
       : pastChats.filter(chat => {
-          const chatModel = chat.pika_agent.models?.chat;
-          return chatModel && chatModel.api_name === selectedApiProvider;
-        });
-    
+        const chatModel = chat.pika_agent.models?.chat;
+        return chatModel && chatModel.api_name === selectedApiProvider;
+      });
+
     // Then sort by updatedAt in descending order
     return filtered.sort((a, b) => {
       const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
@@ -165,7 +165,7 @@ const ChatPIKA: React.FC = () => {
                 return (
                   <ChatCardView
                     items={null}
-                    item={currentChat}
+                    item={currentChat && convertPopulatedToPIKAChat(currentChat)}
                     mode={'view'}
                     onChange={() => null}
                     handleSave={async () => { }}
@@ -232,7 +232,7 @@ const ChatPIKA: React.FC = () => {
                   />
                 )
               case 'Add Code Execution':
-                return ( 
+                return (
                   <EnhancedCodeExecution
                     mode={'list'}
                     fetchAll={true}
@@ -264,13 +264,8 @@ const ChatPIKA: React.FC = () => {
       <Box className={classes.chatPIKAMain}>
         <Box className={classes.chatPIKAMessages}>
           {currentChat ? (
-            <ChatMessagesFullView 
-            item={currentChat} 
-            showRegenerate={true} 
-            items={null} 
-            onChange={()=>{}} 
-            mode='view' 
-            handleSave={async () => {}} 
+            <ChatMessagesFullView
+              showRegenerate={true}
             />
           ) : (
             <PlaceholderSkeleton

@@ -1,5 +1,5 @@
 import { PIKAAgent } from './AgentTypes';
-import { PIKAChat } from './ChatTypes';
+import { PIKAChat, PopulatedPIKAChat } from './ChatTypes';
 import { PIKAModel } from './ModelTypes';
 import { PIKATask } from './TaskTypes';
 import { Prompt } from './PromptTypes';
@@ -43,6 +43,27 @@ export type CollectionElementString = 'Agent' | 'Model' | 'Parameter' | 'Prompt'
 export type CollectionType = {
     agents: PIKAAgent;
     chats: PIKAChat;
+    models: PIKAModel;
+    tasks: PIKATask;
+    prompts: Prompt;
+    taskresults: TaskResponse;
+    users: User;
+    parameters: ParameterDefinition;
+    apis: API;
+    files: FileReference;
+    messages: MessageType;
+    userinteractions: UserInteraction;
+    usercheckpoints: UserCheckpoint;
+    dataclusters: DataCluster;
+    embeddingchunks: EmbeddingChunk;
+    toolcalls: ToolCall;
+    codeexecutions: CodeExecution;
+    apiconfigs: APIConfig;
+    entityreferences: EntityReference;
+};
+export type CollectionPopulatedType = {
+    agents: PIKAAgent;
+    chats: PopulatedPIKAChat;
     models: PIKAModel;
     tasks: PIKATask;
     prompts: Prompt;
