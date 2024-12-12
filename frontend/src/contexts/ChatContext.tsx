@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react';
 import { PIKATask } from '../types/TaskTypes';
 import { PIKAChat, PopulatedPIKAChat } from '../types/ChatTypes';
 import { MessageType } from '../types/MessageTypes';
@@ -25,6 +25,8 @@ interface ChatContextType {
     currentChat: PopulatedPIKAChat | null;
     addTaskToChat: (taskId: string) => Promise<void>;
     isTaskInChat: (taskId: string) => boolean;
+    chatContextCharacterCount: number;
+    maxContext: number;
 }
 
 const ChatContext = createContext<ChatContextType | null>(null);
@@ -50,6 +52,24 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
             Logger.error('Error fetching chats:', error);
         }
     }, [fetchItem]);
+
+    const chatMessageCharacterCount = useMemo(() => {
+        let size = 0;
+        messages.forEach((message) => {
+            size += message.content.length;
+        });
+        return size
+    }, [messages])
+
+    const chatContextCharacterCount = useMemo(() => {
+        const sysPropmtSize = currentChat?.pika_agent.system_message.content.length || 0;
+        const size = chatMessageCharacterCount + sysPropmtSize;
+        return size
+    }, [chatMessageCharacterCount, currentChat?.pika_agent])
+
+    const maxContext = useMemo(() => {
+        return currentChat?.pika_agent.models?.chat?.config_obj?.ctx_size || currentChat?.pika_agent.models?.instruct?.config_obj?.ctx_size || 0
+    }, [currentChat?.pika_agent])
 
     useEffect(() => {
         if (user) {
@@ -176,7 +196,9 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
         fetchChats,
         currentChat,
         addTaskToChat,
-        isTaskInChat
+        isTaskInChat,
+        chatContextCharacterCount,
+        maxContext,
     };
 
     return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
