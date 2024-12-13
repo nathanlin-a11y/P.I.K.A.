@@ -27,8 +27,8 @@ const TaskListView: React.FC<TaskComponentProps> = ({
 
     return (
         <EnhancedListView<PIKATask>
-            items={items}
-            item={item}
+            items={items as PIKATask[]}
+            item={item as PIKATask}
             getPrimaryText={getPrimaryText}
             getSecondaryText={getSecondaryText}
             onView={onView}

@@ -20,8 +20,8 @@ const ChatListView: React.FC<ChatComponentProps> = ({
 
     return (
         <EnhancedListView<PIKAChat>
-            items={items}
-            item={item}
+            items={items as PIKAChat[]}
+            item={item as PIKAChat}
             getPrimaryText={getPrimaryText}
             getSecondaryText={getSecondaryText}
             onView={onView}

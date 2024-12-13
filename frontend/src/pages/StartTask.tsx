@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState, memo } from 'react';
 import { Box, Typography, List, Accordion, AccordionSummary, AccordionDetails, SelectChangeEvent } from '@mui/material';
 import { Add, Functions, Assignment, ExpandMore } from '@mui/icons-material';
 import { TASK_SIDEBAR_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from '../utils/Constants';
-import { PIKATask, TaskType } from '../types/TaskTypes';
+import { PIKATask, PopulatedTask, TaskType } from '../types/TaskTypes';
 import { APIConfig } from '../types/ApiConfigTypes';
 import { CollectionElementString } from '../types/CollectionTypes';
 import VerticalMenuSidebar from '../components/ui/vertical_menu/VerticalMenuSidebar';
@@ -64,13 +64,13 @@ interface FilterSelectProps {
 }
 
 interface TaskListProps {
-    items: PIKATask[];
-    onView: (task: PIKATask) => void;
-    onInteraction: (task: PIKATask) => void;
+    items: PIKATask[] | PopulatedTask[];
+    onView: (task: PIKATask | PopulatedTask) => void;
+    onInteraction: (task: PIKATask | PopulatedTask) => void;
 }
 
 interface TaskExecuteProps {
-    item: PIKATask;
+    item: PIKATask | PopulatedTask;
     onExecute: () => Promise<void>;
 }
 
@@ -82,7 +82,7 @@ interface TaskResponseProps {
 
 interface RecentExecutionsSectionProps {
     recentExecutions: RecentExecution[];
-    selectedTask: PIKATask | null;
+    selectedTask: PopulatedTask | null;
     onExecutionView: (execution: RecentExecution) => void;
     onExecutionInteraction: (execution: RecentExecution) => void;
 }
@@ -253,7 +253,7 @@ const StartTask: React.FC = () => {
         }
     }, []);
 
-    const handleTabWhenTaskSelect = useCallback((task: PIKATask) => {
+    const handleTabWhenTaskSelect = useCallback((task: PIKATask | PopulatedTask) => {
         if (task) {
             handleSelectTask(task);
         }
@@ -265,7 +265,7 @@ const StartTask: React.FC = () => {
         }
     }, [selectCardItem]);
 
-    const handleTaskView = useCallback((task: PIKATask) => {
+    const handleTaskView = useCallback((task: PIKATask | PopulatedTask) => {
         if (task._id) {
             selectCardItem('Task', task._id);
         }
@@ -297,7 +297,7 @@ const StartTask: React.FC = () => {
                             case 'Task':
                                 return (
                                     <MemoizedTaskShortListView
-                                        items={filteredTasks}
+                                        items={filteredTasks as PIKATask[] | PopulatedTask[]}
                                         onView={handleTaskView}
                                         onInteraction={handleTabWhenTaskSelect}
                                     />

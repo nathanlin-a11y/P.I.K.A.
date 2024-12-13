@@ -1,34 +1,33 @@
 import React from 'react';
-import { PIKAChat, ChatComponentProps } from '../../../../types/ChatTypes';
+import { PIKAChat, ChatComponentProps, PopulatedPIKAChat } from '../../../../types/ChatTypes';
 import ChatFlexibleView from './ChatFlexibleView';
 import ChatListView from './ChatListView';
 import ChatTableView from './ChatTableView';
 import ChatCardView from './ChatCardView';
 import ChatShortListView from './ChatShortListView';
 import BaseDbElement, { BaseDbElementProps } from '../../common/enhanced_component/BaseDbElement';
-import Logger from '../../../../utils/Logger';
 
-type BaseChatMode = BaseDbElementProps<PIKAChat>['mode'];
+type BaseChatMode = BaseDbElementProps<PopulatedPIKAChat>['mode'];
 type ExtendedChatMode = 'list' | 'shortList' | 'card' | 'full' | 'table';
 type EnhancedChatMode = BaseChatMode | ExtendedChatMode;
 
 interface EnhancedChatProps extends Omit<ChatComponentProps, 'items' | 'item' | 'onChange' | 'handleSave' | 'mode' | 'handleDelete'> {
   mode: EnhancedChatMode;
-  item?: Partial<PIKAChat> | null;
+  item?: Partial<PIKAChat | PopulatedPIKAChat> | null;
   itemId?: string;
   fetchAll: boolean;
-  onSave?: (savedItem: PIKAChat) => Promise<void>;
-  onDelete?: (deletedItem: PIKAChat) => Promise<void>;
+  onSave?: (savedItem: PIKAChat | PopulatedPIKAChat) => Promise<void>;
+  onDelete?: (deletedItem: PIKAChat | PopulatedPIKAChat) => Promise<void>;
 }
 
 const EnhancedChat: React.FC<EnhancedChatProps> = (props) => {
   const renderContent = (
-    items: PIKAChat[] | null,
-    item: PIKAChat | null,
-    onChange: (newItem: Partial<PIKAChat>) => void,
+    items: (PIKAChat | PopulatedPIKAChat)[] | null,
+    item: PIKAChat | PopulatedPIKAChat | null,
+    onChange: (newItem: Partial<PIKAChat | PopulatedPIKAChat>) => void,
     mode: BaseChatMode,
     handleSave: () => Promise<void>,
-    onDelete: (deletedItem: PIKAChat) => Promise<void>,
+    onDelete: (deletedItem: PIKAChat | PopulatedPIKAChat) => Promise<void>,
   ) => {
     const commonProps: ChatComponentProps = {
       items,
@@ -42,7 +41,6 @@ const EnhancedChat: React.FC<EnhancedChatProps> = (props) => {
       onView: props.onView,
       showHeaders: props.showHeaders,
     };
-    Logger.debug('EnhancedChat', commonProps);
 
     switch (props.mode) {
       case 'create':
@@ -52,7 +50,7 @@ const EnhancedChat: React.FC<EnhancedChatProps> = (props) => {
       case 'shortList':
         return <ChatShortListView {...commonProps} />;
       case 'list':
-        return <ChatListView {...commonProps}/>;
+        return <ChatListView {...commonProps} />;
       case 'table':
         return <ChatTableView {...commonProps} />;
       case 'card':
@@ -64,10 +62,9 @@ const EnhancedChat: React.FC<EnhancedChatProps> = (props) => {
 
   const baseDbMode: BaseDbElementProps<PIKAChat>['mode'] =
     props.mode === 'create' ? 'create' :
-    props.mode === 'edit' ? 'edit' : 'view';
-
+      props.mode === 'edit' ? 'edit' : 'view';
   return (
-    <BaseDbElement<PIKAChat>
+    <BaseDbElement<PIKAChat | PopulatedPIKAChat>
       collectionName="chats"
       itemId={props.itemId}
       partialItem={props.item || undefined}

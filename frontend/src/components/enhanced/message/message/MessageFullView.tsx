@@ -9,8 +9,9 @@ import { useCardDialog } from '../../../../contexts/CardDialogContext';
 import { useNotification } from '../../../../contexts/NotificationContext';
 import PIKAMarkdown, { CustomBlockType } from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 import DataClusterManager from '../../data_cluster/data_cluster_manager/DataClusterManager';
-import { hasAnyReferences } from '../../../../types/ReferenceTypes';
+import { hasAnyReferences, References } from '../../../../types/ReferenceTypes';
 import { formatCamelCaseString } from '../../../../utils/StyleUtils';
+import { PopulatedDataCluster } from '../../../../types/DataClusterTypes';
 
 const MessageFullView: React.FC<MessageComponentProps> = ({ item: message }) => {
     const classes = useStyles();
@@ -88,8 +89,8 @@ const MessageFullView: React.FC<MessageComponentProps> = ({ item: message }) => 
                     </Box>
                 </Box>
                 <PIKAMarkdown role={message.role} enabledBlocks={[CustomBlockType.PIKA_DOCUMENT, CustomBlockType.ANALYSIS]}>{message.content}</PIKAMarkdown>
-                {message.references && hasAnyReferences(message.references) &&
-                    <DataClusterManager dataCluster={message.references} isEditable={false} />
+                {message.references && hasAnyReferences(message.references as References) &&
+                    <DataClusterManager dataCluster={message.references as PopulatedDataCluster} isEditable={false} />
                 }
                 <Box className={classes.metadataContainer}>
                     {message.step && (

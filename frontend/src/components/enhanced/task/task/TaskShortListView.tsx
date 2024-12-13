@@ -13,8 +13,8 @@ const TaskShortListView: React.FC<TaskComponentProps> = ({
 
     return (
         <EnhancedShortListView<PIKATask>
-            items={items}
-            item={item}
+            items={items as PIKATask[]}
+            item={item as PIKATask}
             getPrimaryText={getPrimaryText}
             getSecondaryText={getSecondaryText}
             onView={onView}

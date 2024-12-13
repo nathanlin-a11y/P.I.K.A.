@@ -1,6 +1,6 @@
 import React from 'react';
 import { PIKAChat } from '../../../../types/ChatTypes';
-import { PIKATask, TaskComponentProps } from '../../../../types/TaskTypes';
+import { PIKATask, PopulatedTask, TaskComponentProps } from '../../../../types/TaskTypes';
 import BaseDbElement, { BaseDbElementProps } from '../../common/enhanced_component/BaseDbElement';
 import TaskCardView from './TaskCardView';
 import TaskListView from './TaskListView';
@@ -16,21 +16,21 @@ type EnhancedTaskMode = BaseTaskMode | ExtendedTaskMode;
 interface EnhancedTaskProps extends Omit<TaskComponentProps, 'items' | 'item' | 'onChange' | 'handleSave' | 'mode'> {
     mode: EnhancedTaskMode;
     itemId?: string;
-    item?: Partial<PIKATask> | null;
+    item?: Partial<PIKATask | PopulatedTask> | null;
     fetchAll: boolean;
-    onSave?: (savedItem: PIKATask) => void;
-    onDelete?: (deletedItem: PIKATask) => Promise<void>;
+    onSave?: (savedItem: PIKATask | PopulatedTask) => void;
+    onDelete?: (deletedItem: PIKATask | PopulatedTask) => Promise<void>;
     onExecute?: () => Promise<any>;
 }
 
 const EnhancedTask: React.FC<EnhancedTaskProps> = (props) => {
     const renderContent = (
-        items: PIKATask[] | null,
-        item: PIKATask | null,
-        onChange: (newItem: Partial<PIKATask>) => void,
+        items: (PIKATask | PopulatedTask)[] | null,
+        item: PIKATask | PopulatedTask | null,
+        onChange: (newItem: Partial<PIKATask | PopulatedTask>) => void,
         mode: BaseTaskMode,
         handleSave: () => Promise<void>,
-        onDelete: (deletedItem: PIKATask) => Promise<void>,
+        onDelete: (deletedItem: PIKATask | PopulatedTask) => Promise<void>,
     ) => {
         const commonProps: TaskComponentProps = {
             items,
@@ -69,7 +69,7 @@ const EnhancedTask: React.FC<EnhancedTaskProps> = (props) => {
             props.mode === 'edit' ? 'edit' : 'view';
 
     return (
-        <BaseDbElement<PIKATask>
+        <BaseDbElement<PIKATask | PopulatedTask>
             collectionName="tasks"
             itemId={props.itemId}
             partialItem={props.item || undefined}

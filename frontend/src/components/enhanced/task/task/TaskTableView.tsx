@@ -31,8 +31,8 @@ const TaskTableView: React.FC<TaskComponentProps> = ({
 
   return (
     <EnhancedTableView<PIKATask>
-      items={items}
-      item={item}
+      items={items as PIKATask[]}
+      item={item as PIKATask}
       columns={columns}
       onView={onView}
       onInteraction={onInteraction}
