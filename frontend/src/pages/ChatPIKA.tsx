@@ -155,7 +155,7 @@ const ChatPIKA: React.FC = () => {
                 return (
                   <ChatCardView
                     items={null}
-                    item={currentChat && convertPopulatedToPIKAChat(currentChat)}
+                    item={currentChat}
                     mode={'view'}
                     onChange={() => null}
                     handleSave={async () => { }}

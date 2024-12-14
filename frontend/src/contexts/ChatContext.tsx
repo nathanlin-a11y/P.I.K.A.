@@ -62,7 +62,8 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     }, [messages])
 
     const chatContextCharacterCount = useMemo(() => {
-        const sysPropmtSize = currentChat?.pika_agent.system_message.content.length || 0;
+        if (!currentChat?.pika_agent) return chatMessageCharacterCount;
+        const sysPropmtSize = currentChat?.pika_agent?.system_message?.content?.length || 0;
         const size = chatMessageCharacterCount + sysPropmtSize;
         return size
     }, [chatMessageCharacterCount, currentChat?.pika_agent])
@@ -80,6 +81,7 @@ export const ChatProvider: React.FC<ChatProviderProps> = ({ children }) => {
     const fetchChatById = useCallback(async (chatId: string): Promise<PopulatedPIKAChat> => {
         try {
             const chatData = await fetchPopulatedItem('chats', chatId) as PopulatedPIKAChat;
+            Logger.debug('Fetched chat by id:', chatData);
             return chatData;
         } catch (error) {
             Logger.error('Error fetching chat by id:', error);

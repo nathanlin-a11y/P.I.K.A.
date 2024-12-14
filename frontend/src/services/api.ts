@@ -1,5 +1,5 @@
 import { dbAxiosInstance, dbAxiosInstanceLMS, taskAxiosInstance } from './axiosInstance';
-import { PIKAChat, convertToPIKAChat } from '../types/ChatTypes';
+import { PIKAChat, convertToPIKAChat, convertToPopulatedPIKAChat, PopulatedPIKAChat } from '../types/ChatTypes';
 import { getDefaultMessageForm, MessageType, PopulatedMessage } from '../types/MessageTypes';
 import { TaskResponse, convertToTaskResponse } from '../types/TaskResponseTypes';
 import { CollectionName, CollectionPopulatedType, CollectionType } from '../types/CollectionTypes';
@@ -96,11 +96,9 @@ export const fetchPopulatedItem = async <T extends CollectionName>(
   Logger.debug("fetchPopulatedItem", collectionName, itemId);
   try {
     // For chats, use the populated endpoint, otherwise use regular endpoint
-    const url = (collectionName === 'chats' && itemId) 
-      ? `/${collectionName}/${itemId}/populated`
-      : itemId 
-        ? `/${collectionName}/${itemId}` 
-        : `/${collectionName}`;
+    const url = itemId ? 
+      `/${collectionName}/${itemId}/populated`: 
+      `/${collectionName}`;
 
     const response = await dbAxiosInstance.get(url);
     const converter = populatedConverters[collectionName];
@@ -303,7 +301,7 @@ export const resumeChat = async (interaction: UserInteraction): Promise<PIKAChat
   }
 };
 
-export const sendMessage = async (chatId: string, message: PopulatedMessage): Promise<PIKAChat> => {
+export const sendMessage = async (chatId: string, message: PopulatedMessage): Promise<PopulatedPIKAChat> => {
   try {
     Logger.debug('Sending message to chatId:', chatId);
 
@@ -328,7 +326,7 @@ export const sendMessage = async (chatId: string, message: PopulatedMessage): Pr
 
     const response = await dbAxiosInstance.patch(`/chats/${chatId}/add_message`, { message });
     Logger.debug('Received response:', response.data);
-    return convertToPIKAChat(response.data.chat);
+    return convertToPopulatedPIKAChat(response.data.chat);
   } catch (error) {
     Logger.error('Error sending message:', error);
     throw error;
