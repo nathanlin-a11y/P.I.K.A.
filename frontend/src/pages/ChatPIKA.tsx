@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef, useMemo } from 'react';
 import { Box, SelectChangeEvent } from '@mui/material';
 import { Add, Info, } from '@mui/icons-material';
 import { PIKATask, PopulatedTask } from '../types/TaskTypes';
-import { PIKAChat, convertPopulatedToPIKAChat, PopulatedPIKAChat } from '../types/ChatTypes';
+import { PIKAChat, PopulatedPIKAChat } from '../types/ChatTypes';
 import { TASK_SIDEBAR_WIDTH, SIDEBAR_COLLAPSED_WIDTH } from '../utils/Constants';
 import { useChat } from '../contexts/ChatContext';
 import VerticalMenuSidebar from '../components/ui/vertical_menu/VerticalMenuSidebar';
