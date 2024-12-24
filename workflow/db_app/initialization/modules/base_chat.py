@@ -147,15 +147,6 @@ base_chat_module = BaseChatModule(
                 }
             },
             {
-                "key": "lm_studio_chat",
-                "name": "LMStudio Chat",
-                "pika_agent": "lm_studio_pika",
-                "default_user_checkpoints": {
-                    "tool_call": "default_tool_call_checkpoint",
-                    "code_execution": "default_code_exec_checkpoint"
-                }
-            },
-            {
                 "key": "gemini_chat",
                 "name": "Gemini Chat",
                 "pika_agent": "gemini_pika",
