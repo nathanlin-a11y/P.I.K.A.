@@ -4,7 +4,6 @@ import { FileComponentProps, PopulatedFileReference } from '../../../../types/Fi
 import CommonCardView from '../../common/enhanced_component/CardView';
 import { CalendarToday, AccessTime, TextSnippet, AttachFile, QueryBuilder, DataObject } from '@mui/icons-material';
 import { getFileSize } from '../../../../utils/FileUtils';
-import PIKAMarkdown from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 import EmbeddingChunkViewer from '../../embedding_chunk/embedding_chunk/EmbeddingChunkViewer';
 import FileContentView from '../FileContentView';
 import { getFileIcon } from '../../../../utils/MessageUtils';
