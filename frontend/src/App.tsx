@@ -7,7 +7,7 @@ import HomePage from './pages/HomePage';
 import ChatPIKA from './pages/ChatPIKA';
 import MainLayout from './layouts/main_layout/MainLayout';
 import CreateWorkflow from './pages/StartTask';
-import Login from './pages/Login';
+import Login from './pages/Login'; 
 import Register from './pages/Register';
 import ProtectedRoute from './layouts/ProtectedRoute';
 import UserSettings from './pages/UserSettings';
