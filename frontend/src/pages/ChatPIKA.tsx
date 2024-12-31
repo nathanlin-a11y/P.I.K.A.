@@ -268,16 +268,18 @@ const ChatPIKA: React.FC = () => {
             />
           )}
         </Box>
-        <Box className={classes.chatPIKAInput}>
-          <ChatInput
-            ref={chatInputRef}
-            sendMessage={handleSendMessage}
-            currentChatId={currentChatId}
-            chatSelected={!!currentChatId}
-            chatContextCharacterCount={chatContextCharacterCount}
-            maxContext={maxContext}
-          />
-        </Box>
+        {currentChatId && (
+          <Box className={classes.chatPIKAInput}>
+            <ChatInput
+              ref={chatInputRef}
+              sendMessage={handleSendMessage}
+              currentChatId={currentChatId}
+              chatSelected={!!currentChatId}
+              chatContextCharacterCount={chatContextCharacterCount}
+              maxContext={maxContext}
+            />
+          </Box>
+        )}
       </Box>
     </Box>
   );

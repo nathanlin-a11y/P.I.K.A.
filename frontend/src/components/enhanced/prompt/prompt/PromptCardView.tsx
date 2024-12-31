@@ -10,6 +10,7 @@ import useStyles from '../PromptStyles';
 import CommonCardView from '../../common/enhanced_component/CardView';
 import { useCardDialog } from '../../../../contexts/CardDialogContext';
 import PIKAMarkdown from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
+import ContentStats from '../../../ui/markdown/ContentStats';
 
 const PromptCardView: React.FC<PromptComponentProps> = ({
     item,
@@ -25,9 +26,12 @@ const PromptCardView: React.FC<PromptComponentProps> = ({
             icon: <Code />,
             primary_text: "Content",
             secondary_text: (
-                <PIKAMarkdown showCopyButton>
-                    {item.content}
-                </PIKAMarkdown>
+                <>
+                    <ContentStats content={item.content} />
+                    <PIKAMarkdown showCopyButton>
+                        {item.content}
+                    </PIKAMarkdown>
+                </>
             )
         },
         {
@@ -35,11 +39,11 @@ const PromptCardView: React.FC<PromptComponentProps> = ({
             primary_text: "Templated",
             secondary_text: item.is_templated ? (
                 <Tooltip title="Click here to view the parsed prompt">
-                <Chip
-                    label="Yes"
-                    color="primary"
-                    onClick={() => selectPromptParsedDialog(item)}
-                />
+                    <Chip
+                        label="Yes"
+                        color="primary"
+                        onClick={() => selectPromptParsedDialog(item)}
+                    />
                 </Tooltip>
             ) : 'No'
         },
