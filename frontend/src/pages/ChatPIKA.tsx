@@ -258,9 +258,7 @@ const ChatPIKA: React.FC = () => {
       <Box className={classes.chatPIKAMain}>
         <Box className={classes.chatPIKAMessages}>
           {currentChat ? (
-            <ChatMessagesFullView
-              showRegenerate={true}
-            />
+            <ChatMessagesFullView />
           ) : (
             <PlaceholderSkeleton
               mode="chat"
@@ -272,11 +270,6 @@ const ChatPIKA: React.FC = () => {
           <Box className={classes.chatPIKAInput}>
             <ChatInput
               ref={chatInputRef}
-              sendMessage={handleSendMessage}
-              currentChatId={currentChatId}
-              chatSelected={!!currentChatId}
-              chatContextCharacterCount={chatContextCharacterCount}
-              maxContext={maxContext}
             />
           </Box>
         )}
