@@ -10,7 +10,6 @@ import CommonCardView from '../../common/enhanced_component/CardView';
 import { hasAnyReferences, References } from '../../../../types/ReferenceTypes';
 import PIKAMarkdown, { CustomBlockType } from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 import EmbeddingChunkViewer from '../../embedding_chunk/embedding_chunk/EmbeddingChunkViewer';
-import ReferencesViewer from '../../data_cluster/ReferencesViewer';
 import { getMessageTypeIcon } from '../../../../utils/MessageUtils';
 import ContentStats from '../../../ui/markdown/ContentStats';
 import GenerationMetadataViewer from '../MetadataViewer';
