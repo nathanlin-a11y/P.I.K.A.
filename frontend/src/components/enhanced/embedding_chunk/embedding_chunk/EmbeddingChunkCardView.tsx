@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Expand, FormatListNumbered, QueryBuilder, Tag, Toc } from '@mui/icons-material';
 import { EmbeddingChunkComponentProps } from '../../../../types/EmbeddingChunkTypes';
-import CommonCardView from '../../common/enhanced_component/CardView';
+import CommonCardView from '../../../common/enhanced_component/CardView';
 import { CopyButton } from '../../../ui/markdown/CopyButton';
 import PIKAMarkdown from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 

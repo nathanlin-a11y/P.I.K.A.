@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChatComponentProps, PIKAChat } from '../../../../types/ChatTypes';
-import EnhancedTableView, { Column } from '../../common/enhanced_component/TableView';
+import EnhancedTableView, { Column } from '../../../common/enhanced_component/TableView';
 
 const ChatTableView: React.FC<ChatComponentProps> = ({
   items,
@@ -23,7 +23,7 @@ const ChatTableView: React.FC<ChatComponentProps> = ({
     },
     {
       header: 'Msg Count',
-      render: (chat: PIKAChat) => chat.messages.length || 0,
+      render: (chat: PIKAChat) => chat.threads?.length || 0,
       sortKey: 'messages.length'
     }
   ];

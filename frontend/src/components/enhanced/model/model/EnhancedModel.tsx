@@ -5,7 +5,7 @@ import ModelTableView from './ModelTableView';
 import ModelShortListView from './ModelShortListView';
 import ModelCardView from './ModelCardView';
 import { PIKAModel } from '../../../../types/ModelTypes';
-import BaseDbElement, { BaseDbElementProps } from '../../common/enhanced_component/BaseDbElement';
+import BaseDbElement, { BaseDbElementProps } from '../../../common/enhanced_component/BaseDbElement';
 import { ModelComponentProps } from '../../../../types/ModelTypes';
 
 type BaseModelMode = BaseDbElementProps<PIKAModel>['mode'];

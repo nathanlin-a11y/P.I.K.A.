@@ -18,7 +18,7 @@ import {
     Cable,
 } from '@mui/icons-material';
 import { EntityReferenceComponentProps, PopulatedEntityReference } from '../../../../types/EntityReferenceTypes';
-import CommonCardView from '../../common/enhanced_component/CardView';
+import CommonCardView from '../../../common/enhanced_component/CardView';
 import { CodeBlock } from '../../../ui/markdown/CodeBlock';
 import PIKAMarkdown from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 import { referenceCategoryToIcon } from '../../../../utils/EntityReferenceUtils';

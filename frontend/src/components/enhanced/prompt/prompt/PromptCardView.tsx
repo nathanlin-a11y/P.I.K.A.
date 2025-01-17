@@ -7,7 +7,7 @@ import {
 import { Code, Assignment, QueryBuilder, Settings } from '@mui/icons-material';
 import { PromptComponentProps } from '../../../../types/PromptTypes';
 import useStyles from '../PromptStyles';
-import CommonCardView from '../../common/enhanced_component/CardView';
+import CommonCardView from '../../../common/enhanced_component/CardView';
 import { useDialog } from '../../../../contexts/DialogContext';
 import PIKAMarkdown from '../../../ui/markdown/pika_markdown/PIKAMarkdown';
 import ContentStats from '../../../ui/markdown/ContentStats';

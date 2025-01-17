@@ -18,10 +18,12 @@ import { convertToEntityReference, convertToPopulatedEntityReference } from "../
 import { convertToPopulatedToolCall, convertToToolCall } from "../types/ToolCallTypes";
 import { convertToCodeExecution, convertToPopulatedCodeExecution } from "../types/CodeExecutionTypes";
 import { convertToAPIConfig } from "../types/ApiConfigTypes";
+import { convertToChatThread, convertToPopulatedChatThread } from "../types/ChatThreadTypes";
 
 export const converters: { [K in CollectionName]: (data: any) => CollectionType[K] } = {
     agents: convertToPIKAAgent,
     chats: convertToPIKAChat,
+    chatthreads: convertToChatThread,
     models: convertToPIKAModel,
     tasks: convertToPIKATask,
     prompts: convertToPrompt,
@@ -43,6 +45,7 @@ export const converters: { [K in CollectionName]: (data: any) => CollectionType[
 export const populatedConverters: { [K in CollectionName]: (data: any) => CollectionPopulatedType[K] } = {
     // Use populated chat converter
     chats: convertToPopulatedPIKAChat,
+    chatthreads: convertToPopulatedChatThread,
     tasks: convertToPopulatedTask,
     taskresults: convertToPopulatedTaskResponse,
     files: convertToPopulatedFileReference,
