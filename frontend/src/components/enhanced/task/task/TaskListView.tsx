@@ -1,6 +1,6 @@
 import React from 'react';
 import { PIKATask, TaskComponentProps } from '../../../../types/TaskTypes';
-import { IconButton, Tooltip, Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import EnhancedListView from '../../../common/enhanced_component/ListView';
 import { Functions } from '@mui/icons-material';
 import { formatCamelCaseString } from '../../../../utils/StyleUtils';

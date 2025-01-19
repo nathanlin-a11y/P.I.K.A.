@@ -16,7 +16,6 @@ import PIKAMarkdown from '../../ui/markdown/pika_markdown/PIKAMarkdown';
 import { CodeBlock } from '../../ui/markdown/CodeBlock';
 import { ArrowBack } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import Logger from '../../../utils/Logger';
 import { cn } from '../../../utils/cn';
 import { taskDescriptions } from '../../../utils/TaskUtilts';
 
